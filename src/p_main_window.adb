@@ -11,10 +11,31 @@ package body P_Main_Window is
    begin
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Demineur");
-
-      Main_Window.Win.Add(Main_Window.Cell.Button);
+      Gtk_New_Hbox(Main_Window.Box);
+      
+      Main_Window.Cell1.Mined := true;
+      
+      Main_Window.Box.Pack_End(
+         Main_Window.Cell1.Button,
+         Expand=>true);
+      Main_Window.Box.Pack_End(
+         Main_Window.Cell2.Button,
+         Expand=>true);
+      Main_Window.Win.Add(Main_Window.Box);
 
       Connect(Main_Window.Win, "destroy", Stop_Program'access) ;
+      Connect(
+         Main_Window.Cell1.Button,
+         "clicked",
+         Clicked_Callback'access,
+         Main_Window.Cell1) ;
+
+      Connect(
+         Main_Window.Cell2.Button,
+         "clicked",
+         Clicked_Callback'access,
+         Main_Window.Cell2) ;
+
       Main_Window.Win.Show_All;
    end Initialize;
 
