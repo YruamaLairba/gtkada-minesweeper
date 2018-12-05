@@ -14,11 +14,12 @@ package body P_Main_Window is
       Gtk_New_Hbox(Main_Window.Box);
       
       Main_Window.Cell1.Mined := true;
+      Main_Window.Cell2.Nb_Foreign_Mine := 5;
       
-      Main_Window.Box.Pack_End(
+      Main_Window.Box.Pack_Start(
          Main_Window.Cell1.Button,
          Expand=>true);
-      Main_Window.Box.Pack_End(
+      Main_Window.Box.Pack_Start(
          Main_Window.Cell2.Button,
          Expand=>true);
       Main_Window.Win.Add(Main_Window.Box);

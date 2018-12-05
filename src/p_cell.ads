@@ -4,6 +4,7 @@ with Glib; use Glib;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Image; use Gtk.Image;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Handlers ;
 
 package P_Cell is
