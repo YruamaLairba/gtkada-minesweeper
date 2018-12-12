@@ -33,11 +33,21 @@ package body P_Main_Window is
          "clicked",
          Clicked_Callback'access,
          Main_Window.Cell1) ;
+      Connect(
+         Main_Window.Cell1.Button,
+         "button_press_event",
+         Flag_Callback'access,
+         Main_Window.Cell1) ;
 
       Connect(
          Main_Window.Cell2.Button,
          "clicked",
          Clicked_Callback'access,
+         Main_Window.Cell2) ;
+      Connect(
+         Main_Window.Cell2.Button,
+         "button_press_event",
+         Flag_Callback'access,
          Main_Window.Cell2) ;
 
       Main_Window.Win.Show_All;

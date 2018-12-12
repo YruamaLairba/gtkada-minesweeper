@@ -28,4 +28,9 @@ package P_Cell is
       Emetteur : access Gtk_Button_Record'class;
       Cell: T_Cell);
 
+   function Flag_Callback(
+      Emetteur : access Gtk_Button_Record'class;
+      Cell: T_Cell) return Boolean;
+
+
 end P_Cell;

@@ -29,4 +29,10 @@ package P_Main_Window is
       T_Cell) ;
    use P_Button_UHandlers ;
 
+   package P_Button_URHandlers is new Gtk.Handlers.User_Return_Callback(
+      Gtk_Button_Record,
+      Boolean,
+      T_Cell) ;
+   use P_Button_URHandlers ;
+
 end P_Main_Window;
