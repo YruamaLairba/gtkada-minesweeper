@@ -12,6 +12,9 @@ package body P_Main_Window is
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Demineur");
       Gtk_New_Hbox(Main_Window.Box);
+
+      Initialize(Main_Window.Cell1);
+      Initialize(Main_Window.Cell2);
       
       Main_Window.Cell1.Mined := true;
       Main_Window.Cell2.Nb_Foreign_Mine := 5;
