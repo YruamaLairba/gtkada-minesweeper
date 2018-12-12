@@ -37,19 +37,22 @@ package body P_Cell is
 
    Function Flag_Callback(
       Emetteur : access Gtk_Button_Record'class;
+      Event : GDK_Event;
       Cell: T_Cell) return Boolean is
    begin
-      case Cell.State is
-         when Normal =>
-            Cell.State := Flagged;
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
-         when Flagged =>
-            Cell.State := Normal;
-            Cell.Button.Set_Image(Gtk_Image_New);
-         when others =>
-            null;
-      end case;
+      if Get_Button(Event) = 3 then
+         case Cell.State is
+            when Normal =>
+               Cell.State := Flagged;
+               Cell.Button.Set_Image(
+                  Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
+            when Flagged =>
+               Cell.State := Normal;
+               Cell.Button.Set_Image(Gtk_Image_New);
+            when others =>
+               null;
+         end case;
+      end if;
       return false;
    end Flag_Callback;
 
