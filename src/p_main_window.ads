@@ -1,4 +1,5 @@
 with Ada.Finalization; use Ada.Finalization;
+with Gdk.Event; use Gdk.Event;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Handlers ;
@@ -34,5 +35,10 @@ package P_Main_Window is
       Boolean,
       T_Cell) ;
    use P_Button_URHandlers ;
+
+   function Cell_Clicked_Callback(
+      Emetteur : access Gtk_Button_Record'class;
+      Event : GDK_Event;
+      Cell: T_Cell) return Boolean;
 
 end P_Main_Window;

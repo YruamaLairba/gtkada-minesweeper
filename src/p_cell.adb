@@ -9,9 +9,7 @@ package body P_Cell is
       --Cell.Button.Set_Image(Gtk_Image_New);
    end Initialize;
 
-   procedure Clicked_Callback(
-      Emetteur : access Gtk_Button_Record'class;
-      Cell : T_Cell) is
+   procedure Dig(Cell : T_Cell) is
    begin
       if Cell.State = normal then
          Cell.State := Digged;
@@ -33,27 +31,21 @@ package body P_Cell is
             end case;
          end if;
       end if;
-   end Clicked_Callback;
+   end Dig;
 
-   Function Flag_Callback(
-      Emetteur : access Gtk_Button_Record'class;
-      Event : GDK_Event;
-      Cell: T_Cell) return Boolean is
+   procedure Flag(Cell: T_Cell) is
    begin
-      if Get_Button(Event) = 3 then
-         case Cell.State is
-            when Normal =>
-               Cell.State := Flagged;
-               Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
-            when Flagged =>
-               Cell.State := Normal;
-               Cell.Button.Set_Image(Gtk_Image_New);
-            when others =>
-               null;
-         end case;
-      end if;
-      return false;
-   end Flag_Callback;
+      case Cell.State is
+         when Normal =>
+            Cell.State := Flagged;
+            Cell.Button.Set_Image(
+               Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
+         when Flagged =>
+            Cell.State := Normal;
+            Cell.Button.Set_Image(Gtk_Image_New);
+         when others =>
+            null;
+      end case;
+   end Flag;
 
 end P_Cell;

@@ -1,7 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Finalization; use Ada.Finalization;
 with Glib; use Glib;
-with Gdk.Event; use Gdk.Event;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Image; use Gtk.Image;
@@ -25,14 +24,9 @@ package P_Cell is
 
    procedure Initialize (Cell: in out T_Cell);
 
-   procedure Clicked_Callback(
-      Emetteur : access Gtk_Button_Record'class;
-      Cell: T_Cell);
+   procedure Dig( Cell: T_Cell);
 
-   function Flag_Callback(
-      Emetteur : access Gtk_Button_Record'class;
-      Event : GDK_Event;
-      Cell: T_Cell) return Boolean;
+   procedure Flag( Cell: T_Cell);
 
 
 end P_Cell;
