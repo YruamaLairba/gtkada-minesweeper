@@ -1,4 +1,5 @@
 with Ada.Finalization; use Ada.Finalization;
+with Ada.Unchecked_Deallocation ;
 with Glib; use Glib;
 with Gdk.Event; use Gdk.Event;
 with Gtk.Button; use Gtk.Button;
@@ -12,6 +13,7 @@ with Gtk.Window; use Gtk.window;
 with P_Cell; use P_Cell;
 
 
+
 package P_Main_Window is
    type T_Game is record
       Height: natural;
@@ -20,6 +22,9 @@ package P_Main_Window is
    end record;
 
    type T_Cell_Tab is array (natural range<>,natural range<>) of T_Cell;
+   type T_Cell_Tab_Access is access all T_Cell_Tab;
+   procedure free is new Ada.Unchecked_Deallocation(
+      T_Cell_Tab,T_Cell_Tab_Access) ;
 
    type T_Main_Window is new Controlled with record
       Win: Gtk_Window;
@@ -31,6 +36,8 @@ package P_Main_Window is
    procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class);
 
    procedure Initialize(Main_Window : in out T_Main_Window);
+
+   procedure Finalize(Main_Window : in out T_Main_Window);
 
    package P_Handlers is new Gtk.Handlers.Callback(Gtk_Widget_Record) ;
    use P_Handlers ;

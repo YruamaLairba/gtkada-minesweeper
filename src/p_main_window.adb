@@ -30,7 +30,7 @@ package body P_Main_Window is
             Initialize(Main_Window.Cells(row, col));
             Main_Window.Table.Attach(
                --Main_Window.Table,
-               Main_Window.Cells(row,col).Button,
+               Main_Window.Cells(row,col).Alignment,
                Guint(col-1),
                Guint(col),
                Guint(row-1),
@@ -50,6 +50,17 @@ package body P_Main_Window is
 
       Main_Window.Win.Show_All;
    end Initialize;
+
+   procedure Finalize(Main_Window : in out T_Main_Window) is
+   begin
+      for row in Main_Window.Cells'Range(1) loop
+         for col in Main_Window.Cells'Range(2) loop
+            free(Main_Window.Cells(row,col));
+         end loop;
+      end loop;
+      free(Main_Window.Cells);
+   end Finalize;
+
 
    function Cell_Clicked_Callback(
       Emetteur : access Gtk_Button_Record'class;

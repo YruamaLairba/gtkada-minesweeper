@@ -4,10 +4,17 @@ package body P_Cell is
    procedure Initialize (Cell: in out T_Cell) is
    begin
       Cell := new T_Cell_Record;
-      Gtk_New(Cell.all.Button);
+      Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
+      Gtk_New(Cell.Button);
+      Cell.Alignment.Add(Cell.Button);
       --Gtk_New(Cell.Image); --initialize a null image
       --Cell.Button.Set_Image(Gtk_Image_New);
    end Initialize;
+
+   procedure Finalize (Cell: in out T_Cell) is
+   begin
+      null;
+   end;
 
    procedure Dig(Cell : T_Cell) is
    begin
@@ -18,7 +25,7 @@ package body P_Cell is
                Gtk_Image_New_From_File("share/icons/mine-rouge.png"));
          else
             case Cell.Nb_Foreign_Mine is
-               when 0 => Set_Label(Cell.Button,"");
+               when 0 => Cell.Button.Destroy;--Set_Label(Cell.Button,"");
                when 1 => Set_Label(Cell.Button,"1");
                when 2 => Set_Label(Cell.Button,"2");
                when 3 => Set_Label(Cell.Button,"3");
