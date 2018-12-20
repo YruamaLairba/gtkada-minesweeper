@@ -44,6 +44,41 @@ package body P_Main_Window is
          end loop;
       end loop;
 
+      --placing a mine at (2,3)
+      Main_Window.Cells(2,3).Mined :=True;
+      -- increment nb_foreign mine in Cell around
+      for f_row in (2-1)..(2+1) loop
+         for f_col in (3-1)..(3+1) loop
+            Main_Window.Cells(f_row,f_col).Nb_Foreign_Mine :=
+               Main_Window.Cells(f_row,f_col).Nb_Foreign_Mine +1;
+         end loop;
+      end loop;
+      --counting foreign mine for each mine;
+      --for row in Main_Window.Cells'Range(1) loop
+      --   for col in Main_Window.Cells'Range(2) loop
+      --      declare
+      --         nb_foreign_mine : natural :=0;
+      --         f_row_first : natural := (
+      --            if row = Main_Window.Cells'first then row else row-1);
+      --         f_row_last : natural := (
+      --            if row = Main_Window.Cells'last then row else row+1);
+      --         f_col_first : natural := (
+      --            if col = Main_Window.Cells'first then col else col-1);
+      --         f_col_last : natural := (
+      --            if col = Main_Window.Cells'last then col else col+1);
+      --      begin
+      --         for f_row in f_row_first..f_row_last loop
+      --            for f_col in f_col_first..f_col_last loop
+      --               if Main_Window.Cells(f_row,f_col).Mined then
+      --                  nb_foreign_mine := nb_foreign_mine + 1;
+      --               end if;
+      --            end loop;
+      --         end loop;
+      --         Main_Window.Cells(row,col).Nb_Foreign_Mine := nb_foreign_mine;
+      --      end;
+      --   end loop;
+      --end loop;
+
       Main_Window.Win.Add(Main_Window.Table);
 
       Connect(Main_Window.Win, "destroy", Stop_Program'access) ;
