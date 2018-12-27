@@ -33,11 +33,22 @@ package P_Main_Window is
       Game: T_Game;
    end record;
 
+   type T_Cell_Callback_Data is record
+      Cell_Tab_Access: T_Cell_Tab_Access;
+      Row : Natural;
+      Col : Natural;
+   end record;
+
    procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class);
 
    procedure Initialize(Main_Window : in out T_Main_Window);
 
    procedure Finalize(Main_Window : in out T_Main_Window);
+
+   procedure Dig_Around(
+      Cells : access T_Cell_Tab;
+      Row : Natural;
+      Col : Natural);
 
    package P_Handlers is new Gtk.Handlers.Callback(Gtk_Widget_Record) ;
    use P_Handlers ;
@@ -49,12 +60,12 @@ package P_Main_Window is
    package P_Button_URHandlers is new Gtk.Handlers.User_Return_Callback(
       Gtk_Button_Record,
       Boolean,
-      T_Cell) ;
+      T_Cell_Callback_Data) ;
    use P_Button_URHandlers ;
 
    function Cell_Clicked_Callback(
       Emetteur : access Gtk_Button_Record'class;
       Event : GDK_Event;
-      Cell: T_Cell) return Boolean;
+      Data: T_Cell_Callback_Data) return Boolean;
 
 end P_Main_Window;

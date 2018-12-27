@@ -40,7 +40,7 @@ package body P_Main_Window is
                Main_Window.Cells(row,col).Button,
                "button_press_event",
                To_Marshaller(Cell_Clicked_Callback'access),
-               Main_Window.Cells(row,col));
+               T_Cell_Callback_Data'(Main_Window.Cells,Row,Col));
          end loop;
       end loop;
 
@@ -96,16 +96,48 @@ package body P_Main_Window is
       free(Main_Window.Cells);
    end Finalize;
 
+   procedure Dig_Around(
+      Cells : access T_Cell_Tab;
+      Row : Natural;
+      Col : Natural) is
+      First_Row : Natural :=
+         (if Row=Cells'first(1) then Cells'first(1) else row-1);
+      Last_Row : Natural :=
+         (if Row=Cells'last(1) then Cells'last(1) else row+1);
+      First_Col : Natural :=
+         (if Col=Cells'first(2) then Cells'first(2) else col-1);
+      Last_Col : Natural :=
+         (if Col=Cells'last(2) then Cells'last(2) else col+1);
+      Cell : T_Cell;
+   begin
+      Cell := Cells(Row, Col);
+      Dig(Cell);
+      if Cell.Nb_Foreign_Mine = 0 then
+         for R in First_Row..Last_Row loop
+            for C in First_Col..Last_Col loop
+               Cell := Cells(R,C);
+               if Cell.State = Normal  then
+                  Dig_Around(Cells, R, C);
+               end if;
+            end loop;
+         end loop;
+      end if;
+   end Dig_Around;
+
 
    function Cell_Clicked_Callback(
       Emetteur : access Gtk_Button_Record'class;
       Event : GDK_Event;
-      Cell: T_Cell) return Boolean is
+      Data: T_Cell_Callback_Data) return Boolean is
+      Row : Natural := Data.Row;
+      Col : Natural := Data.Col;
+      Cell : T_Cell := Data.Cell_Tab_Access(Row,Col);
       No_Animation : Boolean := Cell.State/=Normal;
    begin
       case Get_Button(Event) is
          --left click
-         when 1 => Dig(Cell);
+         when 1 =>
+            Dig_around(Data.Cell_Tab_Access, Row, Col);
          --right click
          when 3 => Flag(Cell);
          when others => null;
