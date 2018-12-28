@@ -2,9 +2,12 @@ with Ada.Finalization; use Ada.Finalization;
 with Ada.Unchecked_Deallocation ;
 with Glib; use Glib;
 with Gdk.Event; use Gdk.Event;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
+with Gtk.Frame; use Gtk.Frame;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Handlers ;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Table; use Gtk.Table;
 with Gtk.HButton_Box ;   use Gtk.HButton_Box ;
 with Gtk.Main; use Gtk.Main;
@@ -28,6 +31,9 @@ package P_Main_Window is
 
    type T_Main_Window is new Controlled with record
       Win: Gtk_Window;
+      Vbox: Gtk_Vbox;
+      Hbox: Gtk_Hbox;
+      Counter: Gtk_Label;
       Table: Gtk_Table;
       Cells : access T_Cell_Tab;
       Game: T_Game;

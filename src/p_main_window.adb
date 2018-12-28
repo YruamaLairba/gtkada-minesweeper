@@ -8,6 +8,7 @@ package body P_Main_Window is
    end Stop_Program ;
 
    procedure Initialize(Main_Window : in out T_Main_Window) is
+      Frame1 : Gtk_Frame := Gtk_Frame_New;
    begin
       Main_Window.Game.Height := 10;
       Main_Window.Game.Width := 10;
@@ -15,6 +16,11 @@ package body P_Main_Window is
 
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Demineur");
+
+      Gtk_New_Vbox(Main_Window.Vbox);
+
+      Gtk_New(Main_Window.Counter,"Cnt");
+
       Gtk_New(
          Main_Window.Table,
          Guint(Main_Window.Game.Height),
@@ -79,7 +85,15 @@ package body P_Main_Window is
       --   end loop;
       --end loop;
 
-      Main_Window.Win.Add(Main_Window.Table);
+      --Main_Window.Vbox.Pack_Start(
+      --   Child => Main_Window.Counter,
+      --   Padding=>16);
+      Frame1.Add(Main_Window.Counter);
+      Main_Window.Vbox.Pack_Start(
+         Child => Frame1,
+         Padding=> 0);
+      Main_Window.Vbox.Pack_Start(Main_Window.Table);
+      Main_Window.Win.Add(Main_Window.Vbox);
 
       Connect(Main_Window.Win, "destroy", Stop_Program'access) ;
 
