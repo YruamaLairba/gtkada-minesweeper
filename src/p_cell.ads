@@ -32,9 +32,13 @@ package P_Cell is
 
    procedure Finalize (Cell: in out T_Cell);
 
+   --procedure Set_State(Cell:  out T_Cell_Record, State : T_Cell_State);
+
    procedure Dig( Cell: T_Cell);
 
    procedure Flag( Cell: T_Cell);
+
+   procedure Unflag( Cell: T_Cell);
 
 
 end P_Cell;

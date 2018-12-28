@@ -44,17 +44,20 @@ package body P_Cell is
 
    procedure Flag(Cell: T_Cell) is
    begin
-      case Cell.State is
-         when Normal =>
-            Cell.State := Flagged;
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
-         when Flagged =>
-            Cell.State := Normal;
-            Cell.Button.Set_Image(Gtk_Image_New);
-         when others =>
-            null;
-      end case;
+      if Cell.State = Normal then
+         Cell.State := Flagged;
+         Cell.Button.Set_Image(
+            Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
+      end if;
    end Flag;
+
+   procedure Unflag(Cell: T_Cell) is
+   begin
+      if Cell.State = Flagged then
+         Cell.State := Normal;
+         Cell.Button.Set_Image( Gtk_Image_New);
+      end if;
+   end Unflag;
+
 
 end P_Cell;

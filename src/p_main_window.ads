@@ -18,18 +18,20 @@ with P_Cell; use P_Cell;
 
 
 package P_Main_Window is
-   type T_Game is record
+   type T_Game_Record is record
       Height: natural;
       Width: natural;
       Nb_Mine: natural;
    end record;
+
+   type T_Game is access all T_Game_Record;
 
    type T_Cell_Tab is array (natural range<>,natural range<>) of T_Cell;
    type T_Cell_Tab_Access is access all T_Cell_Tab;
    procedure free is new Ada.Unchecked_Deallocation(
       T_Cell_Tab,T_Cell_Tab_Access) ;
 
-   type T_Main_Window is new Controlled with record
+   type T_Main_Window_Record is new Controlled with record
       Win: Gtk_Window;
       Vbox: Gtk_Vbox;
       Hbox: Gtk_Hbox;
@@ -39,17 +41,29 @@ package P_Main_Window is
       Game: T_Game;
    end record;
 
+   type T_Main_Window is access all T_Main_Window_Record;
+
    type T_Cell_Callback_Data is record
-      Cell_Tab_Access: T_Cell_Tab_Access;
+      Main_Window: T_Main_Window;
       Row : Natural;
       Col : Natural;
    end record;
 
    procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class);
 
-   procedure Initialize(Main_Window : in out T_Main_Window);
+   procedure Initialize(
+      Main_Window : in out T_Main_Window_Record;
+      Game: T_Game);
+
+   procedure Init_Main_Window(
+      Main_Window: in out T_Main_Window;
+      Game: T_Game);
 
    procedure Finalize(Main_Window : in out T_Main_Window);
+
+   procedure Set_Nb_Mine(
+      Main_Window: in out T_Main_Window_Record;
+      Nb_Mine : Natural);
 
    procedure Dig_Around(
       Cells : access T_Cell_Tab;

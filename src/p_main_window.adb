@@ -7,12 +7,12 @@ package body P_Main_Window is
       Main_Quit;
    end Stop_Program ;
 
-   procedure Initialize(Main_Window : in out T_Main_Window) is
+   procedure Initialize(
+      Main_Window : in out T_Main_Window_Record;
+      Game: T_Game) is
       Frame1 : Gtk_Frame := Gtk_Frame_New;
    begin
-      Main_Window.Game.Height := 10;
-      Main_Window.Game.Width := 10;
-      Main_Window.Game.Nb_Mine := 10;
+      Main_Window.Game := Game;
 
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Demineur");
@@ -41,12 +41,6 @@ package body P_Main_Window is
                Guint(col),
                Guint(row-1),
                Guint(row));
-
-            Connect(
-               Main_Window.Cells(row,col).Button,
-               "button_press_event",
-               To_Marshaller(Cell_Clicked_Callback'access),
-               T_Cell_Callback_Data'(Main_Window.Cells,Row,Col));
          end loop;
       end loop;
 
@@ -100,6 +94,32 @@ package body P_Main_Window is
       Main_Window.Win.Show_All;
    end Initialize;
 
+   procedure Init_Main_Window(
+      Main_Window: in out T_Main_Window;
+      Game: T_Game) is
+   begin
+      Main_Window := new T_Main_Window_Record;
+      Main_Window.Initialize(Game);
+      Main_Window.Set_Nb_Mine(Game.Nb_Mine);
+      for row in Main_Window.Cells'Range(1) loop
+         for col in Main_Window.Cells'Range(2) loop
+            --Initialize(Main_Window.Cells(row, col));
+            --Main_Window.Table.Attach(
+            --   --Main_Window.Table,
+            --   Main_Window.Cells(row,col).Alignment,
+            --   Guint(col-1),
+            --   Guint(col),
+            --   Guint(row-1),
+            --   Guint(row));
+            Connect(
+               Main_Window.all.Cells(row,col).Button,
+               "button_press_event",
+               To_Marshaller(Cell_Clicked_Callback'access),
+               T_Cell_Callback_Data'(Main_Window,Row,Col));
+         end loop;
+      end loop;
+   end Init_Main_Window;
+
    procedure Finalize(Main_Window : in out T_Main_Window) is
    begin
       for row in Main_Window.Cells'Range(1) loop
@@ -109,6 +129,14 @@ package body P_Main_Window is
       end loop;
       free(Main_Window.Cells);
    end Finalize;
+
+   procedure Set_Nb_Mine(
+      Main_Window : in out T_Main_Window_Record;
+      Nb_Mine: Natural) is
+   begin
+      Main_Window.Game.Nb_Mine := Nb_Mine;
+      Main_Window.Counter.Set_Label(Natural'Image(Nb_Mine));
+   end;
 
    procedure Dig_Around(
       Cells : access T_Cell_Tab;
@@ -145,15 +173,28 @@ package body P_Main_Window is
       Data: T_Cell_Callback_Data) return Boolean is
       Row : Natural := Data.Row;
       Col : Natural := Data.Col;
-      Cell : T_Cell := Data.Cell_Tab_Access(Row,Col);
+      Cell : T_Cell := Data.Main_Window.Cells(Row,Col);
       No_Animation : Boolean := Cell.State/=Normal;
    begin
       case Get_Button(Event) is
          --left click
          when 1 =>
-            Dig_around(Data.Cell_Tab_Access, Row, Col);
+            Dig_around(Data.Main_Window.Cells, Row, Col);
          --right click
-         when 3 => Flag(Cell);
+         when 3 => 
+            case Cell.State is
+               when Normal =>
+                  if Data.Main_Window.Game.Nb_Mine > 0 then
+                     Flag(Cell);
+                     Data.Main_Window.Set_Nb_Mine(
+                        Data.Main_Window.Game.Nb_Mine - 1);
+                  end if;
+               when Flagged =>
+                  Unflag(Cell);
+                  Data.Main_Window.Set_Nb_Mine(
+                     Data.Main_Window.Game.Nb_Mine + 1);
+               when others => null;
+            end case;
          when others => null;
       end case;
       --left click animation only when state is normal
