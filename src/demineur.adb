@@ -15,5 +15,7 @@ begin
          Nb_Mine=> 10);
       Init_Main_Window(main_window, Game);
       Main;
+      free(main_window);
+      free(Game);
    end;
 end demineur;

@@ -49,6 +49,7 @@ package P_Main_Window is
       Col : Natural;
    end record;
 
+
    procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class);
 
    procedure Initialize(
@@ -59,7 +60,7 @@ package P_Main_Window is
       Main_Window: in out T_Main_Window;
       Game: T_Game);
 
-   procedure Finalize(Main_Window : in out T_Main_Window);
+   procedure Finalize(Main_Window : in out T_Main_Window_Record);
 
    procedure Set_Nb_Mine(
       Main_Window: in out T_Main_Window_Record;
@@ -87,5 +88,11 @@ package P_Main_Window is
       Emetteur : access Gtk_Button_Record'class;
       Event : GDK_Event;
       Data: T_Cell_Callback_Data) return Boolean;
+
+   procedure free is new Ada.Unchecked_Deallocation(
+      T_Main_Window_Record,T_Main_Window) ;
+
+   procedure free is new Ada.Unchecked_Deallocation(
+      T_Game_Record,T_Game) ;
 
 end P_Main_Window;

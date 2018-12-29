@@ -1,9 +1,8 @@
 package body P_Cell is
 
 
-   procedure Initialize (Cell: in out T_Cell) is
+   procedure Initialize (Cell: in out T_Cell_Record) is
    begin
-      Cell := new T_Cell_Record;
       Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
       Gtk_New(Cell.Button);
       Cell.Alignment.Add(Cell.Button);
@@ -11,12 +10,17 @@ package body P_Cell is
       --Cell.Button.Set_Image(Gtk_Image_New);
    end Initialize;
 
-   procedure Finalize (Cell: in out T_Cell) is
+   procedure Init_Cell(Cell: in out T_Cell) is
+   begin
+      Cell := new T_Cell_Record;
+   end;
+
+   procedure Finalize (Cell: in out T_Cell_Record) is
    begin
       null;
    end;
 
-   procedure Dig(Cell : T_Cell) is
+   procedure Dig(Cell : in out T_Cell_Record) is
    begin
       if Cell.State = normal then
          Cell.State := Digged;
@@ -42,7 +46,7 @@ package body P_Cell is
       end if;
    end Dig;
 
-   procedure Flag(Cell: T_Cell) is
+   procedure Flag(Cell: in out T_Cell_Record) is
    begin
       if Cell.State = Normal then
          Cell.State := Flagged;
@@ -51,7 +55,7 @@ package body P_Cell is
       end if;
    end Flag;
 
-   procedure Unflag(Cell: T_Cell) is
+   procedure Unflag(Cell: in out T_Cell_Record) is
    begin
       if Cell.State = Flagged then
          Cell.State := Normal;

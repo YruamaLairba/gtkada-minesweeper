@@ -33,7 +33,7 @@ package body P_Main_Window is
 
       for row in Main_Window.Cells'Range(1) loop
          for col in Main_Window.Cells'Range(2) loop
-            Initialize(Main_Window.Cells(row, col));
+            Init_Cell(Main_Window.Cells(row, col));
             Main_Window.Table.Attach(
                --Main_Window.Table,
                Main_Window.Cells(row,col).Alignment,
@@ -120,7 +120,7 @@ package body P_Main_Window is
       end loop;
    end Init_Main_Window;
 
-   procedure Finalize(Main_Window : in out T_Main_Window) is
+   procedure Finalize(Main_Window : in out T_Main_Window_Record) is
    begin
       for row in Main_Window.Cells'Range(1) loop
          for col in Main_Window.Cells'Range(2) loop
@@ -153,7 +153,7 @@ package body P_Main_Window is
       Cell : T_Cell;
    begin
       Cell := Cells(Row, Col);
-      Dig(Cell);
+      Cell.Dig;
       if Cell.Nb_Foreign_Mine = 0 then
          for R in First_Row..Last_Row loop
             for C in First_Col..Last_Col loop
@@ -185,12 +185,12 @@ package body P_Main_Window is
             case Cell.State is
                when Normal =>
                   if Data.Main_Window.Game.Nb_Mine > 0 then
-                     Flag(Cell);
+                     Cell.Flag;
                      Data.Main_Window.Set_Nb_Mine(
                         Data.Main_Window.Game.Nb_Mine - 1);
                   end if;
                when Flagged =>
-                  Unflag(Cell);
+                  Cell.Unflag;
                   Data.Main_Window.Set_Nb_Mine(
                      Data.Main_Window.Game.Nb_Mine + 1);
                when others => null;

@@ -23,22 +23,26 @@ package P_Cell is
       Label: Gtk_Label;
    end record;
 
+
+
+   procedure Initialize (Cell: in out T_Cell_Record);
+
+
+   procedure Finalize (Cell: in out T_Cell_Record);
+
+   --procedure Set_State(Cell:  out T_Cell_Record, State : T_Cell_State);
+
+   procedure Dig(Cell: in out T_Cell_Record);
+
+   procedure Flag(Cell: in out T_Cell_Record);
+
+   procedure Unflag(Cell: in out T_Cell_Record);
+
    type T_Cell is access all T_Cell_Record;
 
    procedure free is new Ada.Unchecked_Deallocation(
       T_Cell_Record,T_Cell) ;
 
-   procedure Initialize (Cell: in out T_Cell);
-
-   procedure Finalize (Cell: in out T_Cell);
-
-   --procedure Set_State(Cell:  out T_Cell_Record, State : T_Cell_State);
-
-   procedure Dig( Cell: T_Cell);
-
-   procedure Flag( Cell: T_Cell);
-
-   procedure Unflag( Cell: T_Cell);
-
+   procedure Init_Cell(Cell: in out T_Cell);
 
 end P_Cell;
