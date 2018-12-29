@@ -24,6 +24,7 @@ package P_Main_Window is
       Height: natural;
       Width: natural;
       Nb_Mine: natural;
+      Nb_Unmined_Cell: natural;
    end record;
 
    type T_Game is access all T_Game_Record;
@@ -78,7 +79,7 @@ package P_Main_Window is
       Nb_Mine: Natural);
 
    procedure Dig_Around(
-      Cells : access T_Cell_Tab;
+      Main_Window: in T_Main_Window;
       Row : Natural;
       Col : Natural);
 

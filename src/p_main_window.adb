@@ -13,6 +13,8 @@ package body P_Main_Window is
       Frame1 : Gtk_Frame := Gtk_Frame_New;
    begin
       Main_Window.Game := Game;
+      Main_Window.Game.Nb_Unmined_Cell := Game.Height * Game.Width -
+         Game.Nb_Mine;
 
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Demineur");
@@ -181,9 +183,10 @@ package body P_Main_Window is
    end Place_Mines;
 
    procedure Dig_Around(
-      Cells : access T_Cell_Tab;
+      Main_Window: in T_Main_Window;
       Row : Natural;
       Col : Natural) is
+      Cells : access T_Cell_Tab := Main_window.all.Cells;
       First_Row : Natural :=
          (if Row=Cells'first(1) then Cells'first(1) else row-1);
       Last_Row : Natural :=
@@ -194,14 +197,26 @@ package body P_Main_Window is
          (if Col=Cells'last(2) then Cells'last(2) else col+1);
       Cell : T_Cell;
    begin
-      Cell := Cells(Row, Col);
-      Cell.Dig;
+      Cell := Main_Window.Cells(Row, Col);
+      if Cell.State = Normal then
+         Cell.Dig;
+         if Cell.Mined then
+            Put_Line("Perdu");
+            return;
+         end if;
+         Main_window.Game.Nb_Unmined_Cell :=
+            Main_window.Game.Nb_Unmined_Cell - 1;
+         if Main_window.Game.Nb_Unmined_Cell = 0 then
+            Put_Line("Gagné");
+            return;
+         end if;
+      end if;
       if Cell.Nb_Foreign_Mine = 0 then
          for R in First_Row..Last_Row loop
             for C in First_Col..Last_Col loop
-               Cell := Cells(R,C);
+               Cell := Main_Window.Cells(R,C);
                if Cell.State = Normal  then
-                  Dig_Around(Cells, R, C);
+                  Dig_Around(Main_Window, R, C);
                end if;
             end loop;
          end loop;
@@ -221,7 +236,7 @@ package body P_Main_Window is
       case Get_Button(Event) is
          --left click
          when 1 =>
-            Dig_around(Data.Main_Window.Cells, Row, Col);
+            Dig_around(Data.Main_Window, Row, Col);
          --right click
          when 3 =>
             case Cell.State is
