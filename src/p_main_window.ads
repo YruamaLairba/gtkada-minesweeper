@@ -1,3 +1,5 @@
+with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
+with Ada.Text_io; use Ada.Text_io;
 with Ada.Finalization; use Ada.Finalization;
 with Ada.Unchecked_Deallocation ;
 with Glib; use Glib;
@@ -70,6 +72,10 @@ package P_Main_Window is
       Main_Window: in out T_Main_Window_Record;
       row: Natural;
       col: Natural);
+
+   procedure Place_Mines(
+      Main_Window: in out T_Main_Window_Record;
+      Nb_Mine: Natural);
 
    procedure Dig_Around(
       Cells : access T_Cell_Tab;

@@ -44,7 +44,7 @@ package body P_Main_Window is
          end loop;
       end loop;
 
-      Main_Window.Place_Mine(2,3);
+      Main_Window.Place_Mines(Main_Window.Game.Nb_Mine);
       --counting foreign mine for each mine;
       --for row in Main_Window.Cells'Range(1) loop
       --   for col in Main_Window.Cells'Range(2) loop
@@ -144,7 +144,7 @@ package body P_Main_Window is
          (if Col=Main_Window.Cells'first(2)
          then Main_Window.Cells'first(2) else col-1);
       Last_Col : Natural :=
-         (if Col=Main_Window.Cells'last(2) 
+         (if Col=Main_Window.Cells'last(2)
          then Main_Window.Cells'last(2) else col+1);
    begin
       Main_Window.Cells(row,col).Mined :=True;
@@ -155,6 +155,31 @@ package body P_Main_Window is
          end loop;
       end loop;
    end Place_Mine;
+
+   procedure Place_Mines(
+      Main_Window: in out T_Main_Window_Record;
+      Nb_Mine: Natural) is
+      Gen : Generator;
+      row: Natural;
+      Col: Natural;
+      Mult_R: Float := Float(
+         Main_Window.Cells'Last(1) - Main_Window.Cells'First(1));
+      Mult_C: Float := Float(
+         Main_Window.Cells'Last(2) - Main_Window.Cells'First(2));
+      Add_R: Float := Float(Main_Window.Cells'First(1));
+      Add_C: Float := Float(Main_Window.Cells'First(2));
+   begin
+      Reset(Gen);
+      for M in 1..Nb_Mine loop
+         loop
+            row := Natural(Random(Gen) * Mult_R + Add_R);
+            col := Natural(Random(Gen) * Mult_C + Add_C);
+            exit when not Main_Window.Cells(Row, Col).Mined;
+         end loop;
+         Place_Mine(Main_Window, row, col);
+      end loop;
+   end Place_Mines;
+
    procedure Dig_Around(
       Cells : access T_Cell_Tab;
       Row : Natural;
@@ -198,7 +223,7 @@ package body P_Main_Window is
          when 1 =>
             Dig_around(Data.Main_Window.Cells, Row, Col);
          --right click
-         when 3 => 
+         when 3 =>
             case Cell.State is
                when Normal =>
                   if Data.Main_Window.Game.Nb_Mine > 0 then
