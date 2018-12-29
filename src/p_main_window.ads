@@ -66,6 +66,11 @@ package P_Main_Window is
       Main_Window: in out T_Main_Window_Record;
       Nb_Mine : Natural);
 
+   procedure Place_Mine(
+      Main_Window: in out T_Main_Window_Record;
+      row: Natural;
+      col: Natural);
+
    procedure Dig_Around(
       Cells : access T_Cell_Tab;
       Row : Natural;

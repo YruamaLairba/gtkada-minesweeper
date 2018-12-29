@@ -44,15 +44,7 @@ package body P_Main_Window is
          end loop;
       end loop;
 
-      --placing a mine at (2,3)
-      Main_Window.Cells(2,3).Mined :=True;
-      -- increment nb_foreign mine in Cell around
-      for f_row in (2-1)..(2+1) loop
-         for f_col in (3-1)..(3+1) loop
-            Main_Window.Cells(f_row,f_col).Nb_Foreign_Mine :=
-               Main_Window.Cells(f_row,f_col).Nb_Foreign_Mine +1;
-         end loop;
-      end loop;
+      Main_Window.Place_Mine(2,3);
       --counting foreign mine for each mine;
       --for row in Main_Window.Cells'Range(1) loop
       --   for col in Main_Window.Cells'Range(2) loop
@@ -138,6 +130,31 @@ package body P_Main_Window is
       Main_Window.Counter.Set_Label(Natural'Image(Nb_Mine));
    end;
 
+   procedure Place_Mine(
+      Main_Window: in out T_Main_Window_Record;
+      row: Natural;
+      col: Natural) is
+      First_Row : Natural :=
+         (if Row=Main_Window.Cells'first(1)
+         then Main_Window.Cells'first(1) else row-1);
+      Last_Row : Natural :=
+         (if Row=Main_Window.Cells'last(1)
+         then Main_Window.Cells'last(1) else row+1);
+      First_Col : Natural :=
+         (if Col=Main_Window.Cells'first(2)
+         then Main_Window.Cells'first(2) else col-1);
+      Last_Col : Natural :=
+         (if Col=Main_Window.Cells'last(2) 
+         then Main_Window.Cells'last(2) else col+1);
+   begin
+      Main_Window.Cells(row,col).Mined :=True;
+      for R in First_Row..Last_Row loop
+         for C in First_Col..Last_Col loop
+            Main_Window.Cells(R,C).Nb_Foreign_Mine :=
+               Main_Window.Cells(R,C).Nb_Foreign_Mine +1;
+         end loop;
+      end loop;
+   end Place_Mine;
    procedure Dig_Around(
       Cells : access T_Cell_Tab;
       Row : Natural;
