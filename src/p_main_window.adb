@@ -183,10 +183,10 @@ package body P_Main_Window is
    end Place_Mines;
 
    procedure Dig_Around(
-      Main_Window: in T_Main_Window;
+      Main_Window: in out T_Main_Window_Record;
       Row : Natural;
       Col : Natural) is
-      Cells : access T_Cell_Tab := Main_window.all.Cells;
+      Cells : access T_Cell_Tab := Main_window.Cells;
       First_Row : Natural :=
          (if Row=Cells'first(1) then Cells'first(1) else row-1);
       Last_Row : Natural :=
@@ -236,7 +236,7 @@ package body P_Main_Window is
       case Get_Button(Event) is
          --left click
          when 1 =>
-            Dig_around(Data.Main_Window, Row, Col);
+            Data.Main_Window.Dig_Around(Row, Col);
          --right click
          when 3 =>
             case Cell.State is

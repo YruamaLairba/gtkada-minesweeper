@@ -79,7 +79,7 @@ package P_Main_Window is
       Nb_Mine: Natural);
 
    procedure Dig_Around(
-      Main_Window: in T_Main_Window;
+      Main_Window: in out T_Main_Window_Record;
       Row : Natural;
       Col : Natural);
 
