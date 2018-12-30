@@ -6,10 +6,12 @@ with Glib; use Glib;
 with Gdk.Event; use Gdk.Event;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
+with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Handlers ;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Table; use Gtk.Table;
 with Gtk.HButton_Box ;   use Gtk.HButton_Box ;
 with Gtk.Main; use Gtk.Main;
@@ -83,6 +85,10 @@ package P_Main_Window is
       Row : Natural;
       Col : Natural);
 
+   procedure Win(Main_Window: in out T_Main_Window_Record);
+
+   --procedure Loose(Main_Window: in out T_Main_Window_Record);
+
    package P_Handlers is new Gtk.Handlers.Callback(Gtk_Widget_Record) ;
    use P_Handlers ;
    package P_Button_UHandlers is new Gtk.Handlers.User_Callback(
@@ -95,6 +101,15 @@ package P_Main_Window is
       Boolean,
       T_Cell_Callback_Data) ;
    use P_Button_URHandlers ;
+
+   package P_Message_Ok_URHandlers is new Gtk.Handlers.User_Callback(
+      Gtk_Button_Record,
+      Gtk_Window) ;
+   use P_Message_Ok_URHandlers ;
+
+   procedure Message_Ok_Callback(
+      Emitter : access Gtk_Button_Record'Class;
+      Message_Win : Gtk_Window);
 
    function Cell_Clicked_Callback(
       Emetteur : access Gtk_Button_Record'class;
