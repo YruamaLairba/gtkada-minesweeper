@@ -202,13 +202,14 @@ package body P_Main_Window is
          Cell.Dig;
          if Cell.Mined then
             Put_Line("Perdu");
+            End_Game(Main_Window,false);
             return;
          end if;
          Main_window.Game.Nb_Unmined_Cell :=
             Main_window.Game.Nb_Unmined_Cell - 1;
          if Main_window.Game.Nb_Unmined_Cell = 0 then
             Put_Line("Gagné");
-            Win(Main_Window);
+         End_Game(Main_Window,true);
             return;
          end if;
       end if;
@@ -224,7 +225,9 @@ package body P_Main_Window is
       end if;
    end Dig_Around;
 
-   procedure Win(Main_Window: in out T_Main_Window_Record) is
+   procedure End_Game(
+      Main_Window: in out T_Main_Window_Record;
+      Win : boolean) is
       Message_Win : Gtk_Window;
       Box : Gtk_Vbox;
       Lbl : Gtk_Label;
@@ -234,7 +237,11 @@ package body P_Main_Window is
       Message_Win.Set_Transient_For(Main_Window.Win);
       Gtk_New_Vbox(Box);
       Message_win.Add(Box);
-      Gtk_New(Lbl, "You win!");
+      if Win then
+         Gtk_New(Lbl, "You win!");
+      else
+         Gtk_New(Lbl, "You Loose!");
+      end if;
       Box.Pack_Start(Lbl);
       Gtk_New(Btn, "Ok");
       P_Message_Ok_URHandlers.Connect(
@@ -244,7 +251,7 @@ package body P_Main_Window is
          Message_Win);
       Box.Pack_Start(Btn);
       Message_Win.Show_All;
-   end Win;
+   end End_Game;
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;

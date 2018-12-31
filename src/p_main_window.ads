@@ -85,7 +85,9 @@ package P_Main_Window is
       Row : Natural;
       Col : Natural);
 
-   procedure Win(Main_Window: in out T_Main_Window_Record);
+   procedure End_Game(
+      Main_Window: in out T_Main_Window_Record;
+      Win : boolean);
 
    --procedure Loose(Main_Window: in out T_Main_Window_Record);
 
