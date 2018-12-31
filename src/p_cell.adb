@@ -46,7 +46,7 @@ package body P_Cell is
       end if;
    end Dig;
 
-   procedure Reveal(Cell : in out T_Cell_Record) is
+   procedure Loose_Reveal(Cell : in out T_Cell_Record) is
    begin
       Cell.Button.Set_Sensitive(false);
       case Cell.State is
@@ -63,7 +63,21 @@ package body P_Cell is
          when others =>
             null;
       end case;
-   end Reveal;
+   end Loose_Reveal;
+
+   procedure Win_Reveal(Cell : in out T_Cell_Record) is
+   begin
+      Cell.Button.Set_Sensitive(false);
+      case Cell.State is
+         when Normal =>
+            if Cell.Mined then
+               Cell.Button.Set_Image(
+                  Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
+            end if;
+         when others =>
+            null;
+      end case;
+   end Win_Reveal;
 
    procedure Flag(Cell: in out T_Cell_Record) is
    begin

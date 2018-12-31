@@ -85,7 +85,9 @@ package P_Main_Window is
       Row : Natural;
       Col : Natural);
 
-   procedure Reveal(Main_Window: in out T_Main_Window_Record);
+   procedure Loose_Reveal(Main_Window: in out T_Main_Window_Record);
+
+   procedure Win_Reveal(Main_Window: in out T_Main_Window_Record);
 
    procedure End_Game(
       Main_Window: in out T_Main_Window_Record;
