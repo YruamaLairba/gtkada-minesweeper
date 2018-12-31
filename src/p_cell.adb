@@ -46,6 +46,25 @@ package body P_Cell is
       end if;
    end Dig;
 
+   procedure Reveal(Cell : in out T_Cell_Record) is
+   begin
+      Cell.Button.Set_Sensitive(false);
+      case Cell.State is
+         when Normal =>
+            if Cell.Mined then
+               Cell.Button.Set_Relief(Relief_None);
+               Cell.Button.Set_Image(
+                  Gtk_Image_New_From_File("share/icons/mine-noire.png"));
+            end if;
+         when Flagged =>
+            if not Cell.Mined then
+               Put_line("Misplaced Flag");
+            end if;
+         when others =>
+            null;
+      end case;
+   end Reveal;
+
    procedure Flag(Cell: in out T_Cell_Record) is
    begin
       if Cell.State = Normal then

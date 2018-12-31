@@ -203,13 +203,15 @@ package body P_Main_Window is
          if Cell.Mined then
             Put_Line("Perdu");
             End_Game(Main_Window,false);
+            Main_Window.Reveal;
             return;
          end if;
          Main_window.Game.Nb_Unmined_Cell :=
             Main_window.Game.Nb_Unmined_Cell - 1;
          if Main_window.Game.Nb_Unmined_Cell = 0 then
             Put_Line("Gagné");
-         End_Game(Main_Window,true);
+            End_Game(Main_Window,true);
+            Main_Window.Reveal;
             return;
          end if;
       end if;
@@ -224,6 +226,13 @@ package body P_Main_Window is
          end loop;
       end if;
    end Dig_Around;
+
+   procedure Reveal(Main_Window: in out T_Main_Window_Record) is
+   begin
+      for Cell of Main_Window.Cells.all loop
+         Cell.Reveal;
+      end loop;
+   end Reveal;
 
    procedure End_Game(
       Main_Window: in out T_Main_Window_Record;

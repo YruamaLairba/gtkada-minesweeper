@@ -34,6 +34,8 @@ package P_Cell is
 
    procedure Dig(Cell: in out T_Cell_Record);
 
+   procedure Reveal(Cell: in out T_Cell_Record);
+
    procedure Flag(Cell: in out T_Cell_Record);
 
    procedure Unflag(Cell: in out T_Cell_Record);
