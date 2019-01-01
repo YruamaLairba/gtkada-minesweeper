@@ -37,13 +37,19 @@ package P_Main_Window is
       T_Cell_Tab,T_Cell_Tab_Access) ;
 
    type T_Main_Window_Record is new Controlled with record
+      --Game Data
+      Height: natural;
+      Width: natural;
+      Nb_Mine: natural;
+      Nb_Unmined_Cell: natural;
+      --Gui object
       Win: Gtk_Window;
       Vbox: Gtk_Vbox;
       Hbox: Gtk_Hbox;
       Counter: Gtk_Label;
       Table: Gtk_Table;
+      --Cells
       Cells : access T_Cell_Tab;
-      Game: T_Game;
    end record;
 
    type T_Main_Window is access all T_Main_Window_Record;
@@ -59,11 +65,15 @@ package P_Main_Window is
 
    procedure Initialize(
       Main_Window : in out T_Main_Window_Record;
-      Game: T_Game);
+      Height: Natural;
+      Width : Natural;
+      Nb_Mine: Natural);
 
    procedure Init_Main_Window(
       Main_Window: in out T_Main_Window;
-      Game: T_Game);
+      Height: Natural;
+      Width : Natural;
+      Nb_Mine: Natural);
 
    procedure Finalize(Main_Window : in out T_Main_Window_Record);
 

@@ -9,13 +9,17 @@ package body P_Main_Window is
 
    procedure Initialize(
       Main_Window : in out T_Main_Window_Record;
-      Game: T_Game) is
+      Height: Natural;
+      Width : Natural;
+      Nb_Mine: Natural) is
       Frame1 : Gtk_Frame := Gtk_Frame_New;
    begin
-      Main_Window.Game := Game;
-      Main_Window.Game.Nb_Unmined_Cell := Game.Height * Game.Width -
-         Game.Nb_Mine;
-
+      --filling game data
+      Main_Window.Height := Height;
+      Main_Window.Width := Width;
+      Main_Window.Nb_Mine := Nb_Mine;
+      Main_Window.Nb_Unmined_Cell := Height * Width - Nb_Mine;
+      --Create and build gui object
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Demineur");
 
@@ -25,19 +29,19 @@ package body P_Main_Window is
 
       Gtk_New(
          Main_Window.Table,
-         Guint(Main_Window.Game.Height),
-         Guint(Main_Window.Game.Width),
+         Guint(Main_Window.Height),
+         Guint(Main_Window.Width),
          true);
 
+      --Create and build cells
       Main_Window.Cells := new T_Cell_Tab(
-         1..Main_Window.Game.Height,
-         1..Main_Window.Game.Width);
+         1..Main_Window.Height,
+         1..Main_Window.Width);
 
       for row in Main_Window.Cells'Range(1) loop
          for col in Main_Window.Cells'Range(2) loop
             Init_Cell(Main_Window.Cells(row, col));
             Main_Window.Table.Attach(
-               --Main_Window.Table,
                Main_Window.Cells(row,col).Alignment,
                Guint(col-1),
                Guint(col),
@@ -46,36 +50,8 @@ package body P_Main_Window is
          end loop;
       end loop;
 
-      Main_Window.Place_Mines(Main_Window.Game.Nb_Mine);
-      --counting foreign mine for each mine;
-      --for row in Main_Window.Cells'Range(1) loop
-      --   for col in Main_Window.Cells'Range(2) loop
-      --      declare
-      --         nb_foreign_mine : natural :=0;
-      --         f_row_first : natural := (
-      --            if row = Main_Window.Cells'first then row else row-1);
-      --         f_row_last : natural := (
-      --            if row = Main_Window.Cells'last then row else row+1);
-      --         f_col_first : natural := (
-      --            if col = Main_Window.Cells'first then col else col-1);
-      --         f_col_last : natural := (
-      --            if col = Main_Window.Cells'last then col else col+1);
-      --      begin
-      --         for f_row in f_row_first..f_row_last loop
-      --            for f_col in f_col_first..f_col_last loop
-      --               if Main_Window.Cells(f_row,f_col).Mined then
-      --                  nb_foreign_mine := nb_foreign_mine + 1;
-      --               end if;
-      --            end loop;
-      --         end loop;
-      --         Main_Window.Cells(row,col).Nb_Foreign_Mine := nb_foreign_mine;
-      --      end;
-      --   end loop;
-      --end loop;
+      Main_Window.Place_Mines(Main_Window.Nb_Mine);
 
-      --Main_Window.Vbox.Pack_Start(
-      --   Child => Main_Window.Counter,
-      --   Padding=>16);
       Frame1.Add(Main_Window.Counter);
       Main_Window.Vbox.Pack_Start(
          Child => Frame1,
@@ -83,6 +59,8 @@ package body P_Main_Window is
       Main_Window.Vbox.Pack_Start(Main_Window.Table);
       Main_Window.Win.Add(Main_Window.Vbox);
 
+
+      Main_Window.Set_Nb_Mine(Nb_Mine);
       Connect(Main_Window.Win, "destroy", Stop_Program'access) ;
 
       Main_Window.Win.Show_All;
@@ -90,21 +68,15 @@ package body P_Main_Window is
 
    procedure Init_Main_Window(
       Main_Window: in out T_Main_Window;
-      Game: T_Game) is
+      Height: Natural;
+      Width : Natural;
+      Nb_Mine: Natural) is
    begin
       Main_Window := new T_Main_Window_Record;
-      Main_Window.Initialize(Game);
-      Main_Window.Set_Nb_Mine(Game.Nb_Mine);
+      Main_Window.Initialize(Height, Width, Nb_Mine);
       for row in Main_Window.Cells'Range(1) loop
          for col in Main_Window.Cells'Range(2) loop
-            --Initialize(Main_Window.Cells(row, col));
-            --Main_Window.Table.Attach(
-            --   --Main_Window.Table,
-            --   Main_Window.Cells(row,col).Alignment,
-            --   Guint(col-1),
-            --   Guint(col),
-            --   Guint(row-1),
-            --   Guint(row));
+            -- i don't understand why i can't put this connect in Initialize
             Connect(
                Main_Window.all.Cells(row,col).Button,
                "button_press_event",
@@ -128,7 +100,7 @@ package body P_Main_Window is
       Main_Window : in out T_Main_Window_Record;
       Nb_Mine: Natural) is
    begin
-      Main_Window.Game.Nb_Mine := Nb_Mine;
+      Main_Window.Nb_Mine := Nb_Mine;
       Main_Window.Counter.Set_Label(Natural'Image(Nb_Mine));
    end;
 
@@ -206,9 +178,9 @@ package body P_Main_Window is
             Main_Window.Loose_Reveal;
             return;
          end if;
-         Main_window.Game.Nb_Unmined_Cell :=
-            Main_window.Game.Nb_Unmined_Cell - 1;
-         if Main_window.Game.Nb_Unmined_Cell = 0 then
+         Main_window.Nb_Unmined_Cell :=
+            Main_window.Nb_Unmined_Cell - 1;
+         if Main_window.Nb_Unmined_Cell = 0 then
             Put_Line("Gagné");
             End_Game(Main_Window,true);
             Main_Window.Win_Reveal;
@@ -293,15 +265,15 @@ package body P_Main_Window is
          when 3 =>
             case Cell.State is
                when Normal =>
-                  if Data.Main_Window.Game.Nb_Mine > 0 then
+                  if Data.Main_Window.Nb_Mine > 0 then
                      Cell.Flag;
                      Data.Main_Window.Set_Nb_Mine(
-                        Data.Main_Window.Game.Nb_Mine - 1);
+                        Data.Main_Window.Nb_Mine - 1);
                   end if;
                when Flagged =>
                   Cell.Unflag;
                   Data.Main_Window.Set_Nb_Mine(
-                     Data.Main_Window.Game.Nb_Mine + 1);
+                     Data.Main_Window.Nb_Mine + 1);
                when others => null;
             end case;
          when others => null;

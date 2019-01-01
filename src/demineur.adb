@@ -9,12 +9,11 @@ begin
       main_window : T_Main_Window;
       Game : T_Game;
    begin
-      Game := new T_Game_Record'(
+      Init_Main_Window(
+         Main_Window => main_window,
          Height => 10,
          Width => 10,
-         Nb_Mine=> 10,
-         Nb_Unmined_Cell=>0);
-      Init_Main_Window(main_window, Game);
+         Nb_Mine=> 10);
       Main;
       free(main_window);
       free(Game);
