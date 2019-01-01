@@ -22,14 +22,6 @@ with P_Cell; use P_Cell;
 
 
 package P_Main_Window is
-   type T_Game_Record is record
-      Height: natural;
-      Width: natural;
-      Nb_Mine: natural;
-      Nb_Unmined_Cell: natural;
-   end record;
-
-   type T_Game is access all T_Game_Record;
 
    type T_Cell_Tab is array (natural range<>,natural range<>) of T_Cell;
    type T_Cell_Tab_Access is access all T_Cell_Tab;
@@ -134,8 +126,5 @@ package P_Main_Window is
 
    procedure free is new Ada.Unchecked_Deallocation(
       T_Main_Window_Record,T_Main_Window) ;
-
-   procedure free is new Ada.Unchecked_Deallocation(
-      T_Game_Record,T_Game) ;
 
 end P_Main_Window;
