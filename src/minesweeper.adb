@@ -4,7 +4,7 @@ with Gtk.Main; use Gtk.Main;
 
 with P_Main_Window; use P_Main_Window;
 
-procedure demineur is
+procedure minesweeper is
    --if Str start with Tag, Var get the value after Tag as Natural
    procedure Test_Then_Get(
       Var : in out Natural;
@@ -49,4 +49,4 @@ begin
       Main;
       free(main_window);
    end;
-end demineur;
+end minesweeper;

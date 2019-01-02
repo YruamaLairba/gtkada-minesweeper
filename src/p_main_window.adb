@@ -31,7 +31,7 @@ package body P_Main_Window is
       Main_Window.Nb_Unmined_Cell := Height * Width - Nb_Mine;
       --Create and build gui object
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
-      Main_Window.Win.Set_Title("Demineur");
+      Main_Window.Win.Set_Title("Minesweeper");
 
       Gtk_New_Vbox(Main_Window.Vbox);
 

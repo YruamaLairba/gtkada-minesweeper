@@ -3,7 +3,7 @@ project build is
    for Source_Dirs use ("src/**");
    for Object_Dir use "obj";
    for Exec_Dir use ".";
-   for Main use ("demineur.adb");
+   for Main use ("minesweeper.adb");
 
    package Builder is
    end Builder;
