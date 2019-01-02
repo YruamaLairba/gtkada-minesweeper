@@ -14,6 +14,16 @@ package body P_Main_Window is
       Nb_Mine: Natural) is
       Frame1 : Gtk_Frame := Gtk_Frame_New;
    begin
+      --Constraint Check
+      if Height < 1 then
+         raise CONSTRAINT_ERROR with "Bad height, minimum value is 1" ;
+      end if;
+      if Width < 1 then
+         raise CONSTRAINT_ERROR with "Bad width, minimum value is 1" ;
+      end if;
+      if Nb_Mine > (Height * Width) then
+         raise CONSTRAINT_ERROR with "Too many mines or too small grid" ;
+      end if;
       --filling game data
       Main_Window.Height := Height;
       Main_Window.Width := Width;
@@ -88,12 +98,14 @@ package body P_Main_Window is
 
    procedure Finalize(Main_Window : in out T_Main_Window_Record) is
    begin
-      for row in Main_Window.Cells'Range(1) loop
-         for col in Main_Window.Cells'Range(2) loop
-            free(Main_Window.Cells(row,col));
+      if Main_Window.Cells /= null then
+         for row in Main_Window.Cells'Range(1) loop
+            for col in Main_Window.Cells'Range(2) loop
+               free(Main_Window.Cells(row,col));
+            end loop;
          end loop;
-      end loop;
-      free(Main_Window.Cells);
+         free(Main_Window.Cells);
+      end if;
    end Finalize;
 
    procedure Set_Nb_Mine(
