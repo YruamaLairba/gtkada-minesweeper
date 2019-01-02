@@ -58,7 +58,9 @@ package body P_Cell is
             end if;
          when Flagged =>
             if not Cell.Mined then
-               Put_line("Misplaced Flag");
+               Cell.Button.Set_Image(
+                  Gtk_Image_New_From_File(
+                     "share/icons/drapeau-bleu-barre.png"));
             end if;
          when others =>
             null;
