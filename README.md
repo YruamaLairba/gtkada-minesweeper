@@ -16,7 +16,7 @@ This project require the following librairies/packages:
 Ensure you have them installed, then use `gprbuild -p` to run the build.
 
 ## Usage
-By Default the game run with a 10⨉10 grid and 10. You can change this using parameters in command line :
+By default the game run with a 10⨉10 grid and 10 mines. You can change this using parameters in command line :
  - `width=<number>` to change width of the grid. Minimum value is 1.
  - `height=<number>` to change height of the grid. Minimum value is 1.
  - `nb_mine=<number>` to change number of mine on the grid. `nb_mine` must be between 0 and width⨉height.
