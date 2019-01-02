@@ -18,7 +18,7 @@ procedure demineur is
          declare
             Val_Str : String := Str(Str'First + Tag'Length..Str'Last);
          begin
-            Var := Integer'Value(Val_Str);
+            Var := Natural'Value(Val_Str);
          exception
             when CONSTRAINT_ERROR =>
                Put_line("""" & Val_Str & """ in """ & Str &
