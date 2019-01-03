@@ -1,26 +1,26 @@
 package body P_Cell is
 
-
-   procedure Initialize (Cell: in out T_Cell_Record) is
+   procedure Init (Cell: not null access T_Cell_Record) is
    begin
       Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
       Gtk_New(Cell.Button);
       Cell.Alignment.Add(Cell.Button);
-      --Gtk_New(Cell.Image); --initialize a null image
-      --Cell.Button.Set_Image(Gtk_Image_New);
-   end Initialize;
+   end Init;
 
-   procedure Init_Cell(Cell: in out T_Cell) is
+   function  New_T_Cell return T_Cell is
+      Cell : T_Cell := new T_Cell_Record;
    begin
       Cell := new T_Cell_Record;
+      Cell.Init;
+      return Cell;
    end;
 
-   procedure Finalize (Cell: in out T_Cell_Record) is
+   procedure Finalize (Cell: not null access T_Cell_Record) is
    begin
       null;
    end;
 
-   procedure Dig(Cell : in out T_Cell_Record) is
+   procedure Dig(Cell : not null access T_Cell_Record) is
    begin
       if Cell.State = normal then
          Cell.State := Digged;
@@ -46,7 +46,7 @@ package body P_Cell is
       end if;
    end Dig;
 
-   procedure Loose_Reveal(Cell : in out T_Cell_Record) is
+   procedure Loose_Reveal(Cell : not null access T_Cell_Record) is
    begin
       Cell.Button.Set_Sensitive(false);
       case Cell.State is
@@ -67,7 +67,7 @@ package body P_Cell is
       end case;
    end Loose_Reveal;
 
-   procedure Win_Reveal(Cell : in out T_Cell_Record) is
+   procedure Win_Reveal(Cell : not null access T_Cell_Record) is
    begin
       Cell.Button.Set_Sensitive(false);
       case Cell.State is
@@ -81,7 +81,7 @@ package body P_Cell is
       end case;
    end Win_Reveal;
 
-   procedure Flag(Cell: in out T_Cell_Record) is
+   procedure Flag(Cell: not null access T_Cell_Record) is
    begin
       if Cell.State = Normal then
          Cell.State := Flagged;
@@ -90,13 +90,12 @@ package body P_Cell is
       end if;
    end Flag;
 
-   procedure Unflag(Cell: in out T_Cell_Record) is
+   procedure Unflag(Cell: not null access T_Cell_Record) is
    begin
       if Cell.State = Flagged then
          Cell.State := Normal;
          Cell.Button.Set_Image( Gtk_Image_New);
       end if;
    end Unflag;
-
 
 end P_Cell;

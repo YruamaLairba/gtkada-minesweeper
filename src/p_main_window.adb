@@ -77,7 +77,7 @@ package body P_Main_Window is
 
       for row in Main_Window.Cells'Range(1) loop
          for col in Main_Window.Cells'Range(2) loop
-            Init_Cell(Main_Window.Cells(row, col));
+            Main_Window.Cells(row, col) := New_T_Cell;
             Main_Window.Table.Attach(
                Main_Window.Cells(row,col).Alignment,
                Guint(col-1),
