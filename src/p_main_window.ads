@@ -51,7 +51,7 @@ package P_Main_Window is
    type T_Main_Window is access all T_Main_Window_Record;
 
    type T_Cell_Callback_Data is record
-      Main_Window: T_Main_Window;
+      Main_Window: not null access T_Main_Window_Record;
       Row : Natural;
       Col : Natural;
    end record;
@@ -65,11 +65,10 @@ package P_Main_Window is
       Width : Natural;
       Nb_Mine: Natural);
 
-   procedure Init_Main_Window(
-      Main_Window: in out T_Main_Window;
+   function New_T_Main_Window(
       Height: Natural;
       Width : Natural;
-      Nb_Mine: Natural);
+      Nb_Mine: Natural) return T_Main_Window;
 
    procedure Finalize(Main_Window : in out T_Main_Window_Record);
 

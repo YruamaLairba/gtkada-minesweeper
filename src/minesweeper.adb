@@ -39,13 +39,11 @@ begin
    --Start the Gui things
    Init;
    declare
-      main_window : T_Main_Window;
-   begin
-      Init_Main_Window(
-         Main_Window => main_window,
+      main_window : T_Main_Window := New_T_Main_Window(
          Height => Height,
          Width => Width,
          Nb_Mine=> Nb_Mine);
+   begin
       Main;
       free(main_window);
    end;

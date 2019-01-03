@@ -84,6 +84,11 @@ package body P_Main_Window is
                Guint(col),
                Guint(row-1),
                Guint(row));
+            Connect(
+               Main_Window.Cells(row,col).Button,
+               "button_press_event",
+               To_Marshaller(Cell_Clicked_Callback'access),
+               T_Cell_Callback_Data'(Main_Window,Row,Col));
          end loop;
       end loop;
 
@@ -103,25 +108,15 @@ package body P_Main_Window is
       Main_Window.Win.Show_All;
    end Initialize;
 
-   procedure Init_Main_Window(
-      Main_Window: in out T_Main_Window;
+   function New_T_Main_Window(
       Height: Natural;
       Width : Natural;
-      Nb_Mine: Natural) is
+      Nb_Mine: Natural) return T_Main_Window is
+      Main_Window: T_Main_Window := new T_Main_Window_Record;
    begin
-      Main_Window := new T_Main_Window_Record;
       Main_Window.Initialize(Height, Width, Nb_Mine);
-      for row in Main_Window.Cells'Range(1) loop
-         for col in Main_Window.Cells'Range(2) loop
-            -- i don't understand why i can't put this connect in Initialize
-            Connect(
-               Main_Window.all.Cells(row,col).Button,
-               "button_press_event",
-               To_Marshaller(Cell_Clicked_Callback'access),
-               T_Cell_Callback_Data'(Main_Window,Row,Col));
-         end loop;
-      end loop;
-   end Init_Main_Window;
+      return Main_Window;
+   end New_T_Main_Window;
 
    procedure Finalize(Main_Window : in out T_Main_Window_Record) is
    begin
