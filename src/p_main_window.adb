@@ -118,7 +118,8 @@ package body P_Main_Window is
       return Main_Window;
    end New_T_Main_Window;
 
-   procedure Finalize(Main_Window : in out T_Main_Window_Record) is
+   procedure Finalize(
+      Main_Window : not null access T_Main_Window_Record) is
    begin
       if Main_Window.Cells /= null then
          for row in Main_Window.Cells'Range(1) loop
@@ -131,7 +132,7 @@ package body P_Main_Window is
    end Finalize;
 
    procedure Set_Nb_Mine(
-      Main_Window : in out T_Main_Window_Record;
+      Main_Window : not null access T_Main_Window_Record;
       Nb_Mine: Natural) is
    begin
       Main_Window.Nb_Mine := Nb_Mine;
@@ -139,7 +140,7 @@ package body P_Main_Window is
    end;
 
    procedure Place_Mine(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       row: Natural;
       col: Natural) is
       First_Row : Natural :=
@@ -165,7 +166,7 @@ package body P_Main_Window is
    end Place_Mine;
 
    procedure Place_Mines(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Nb_Mine: Natural) is
       Gen : Generator;
       row: Natural;
@@ -189,7 +190,7 @@ package body P_Main_Window is
    end Place_Mines;
 
    procedure Dig_Around(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Row : Natural;
       Col : Natural) is
       Cells : access T_Cell_Tab := Main_window.Cells;
@@ -233,14 +234,16 @@ package body P_Main_Window is
       end if;
    end Dig_Around;
 
-   procedure Loose_Reveal(Main_Window: in out T_Main_Window_Record) is
+   procedure Loose_Reveal(
+      Main_Window: not null access T_Main_Window_Record) is
    begin
       for Cell of Main_Window.Cells.all loop
          Cell.Loose_Reveal;
       end loop;
    end Loose_Reveal;
 
-   procedure Win_Reveal(Main_Window: in out T_Main_Window_Record) is
+   procedure Win_Reveal(
+      Main_Window: not null access T_Main_Window_Record) is
    begin
       for Cell of Main_Window.Cells.all loop
          Cell.Win_Reveal;
@@ -248,7 +251,7 @@ package body P_Main_Window is
    end Win_Reveal;
 
    procedure End_Game(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Win : boolean) is
       Message_Win : Gtk_Window;
       Box : Gtk_Vbox;

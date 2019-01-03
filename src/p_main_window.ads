@@ -70,35 +70,36 @@ package P_Main_Window is
       Width : Natural;
       Nb_Mine: Natural) return T_Main_Window;
 
-   procedure Finalize(Main_Window : in out T_Main_Window_Record);
+   procedure Finalize(
+      Main_Window : not null access T_Main_Window_Record);
 
    procedure Set_Nb_Mine(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Nb_Mine : Natural);
 
    procedure Place_Mine(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       row: Natural;
       col: Natural);
 
    procedure Place_Mines(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Nb_Mine: Natural);
 
    procedure Dig_Around(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Row : Natural;
       Col : Natural);
 
-   procedure Loose_Reveal(Main_Window: in out T_Main_Window_Record);
+   procedure Loose_Reveal(
+      Main_Window: not null access T_Main_Window_Record);
 
-   procedure Win_Reveal(Main_Window: in out T_Main_Window_Record);
+   procedure Win_Reveal(
+      Main_Window: not null access T_Main_Window_Record);
 
    procedure End_Game(
-      Main_Window: in out T_Main_Window_Record;
+      Main_Window: not null access T_Main_Window_Record;
       Win : boolean);
-
-   --procedure Loose(Main_Window: in out T_Main_Window_Record);
 
    procedure New_Game_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
@@ -136,8 +137,6 @@ package P_Main_Window is
       Emetteur : access Gtk_Button_Record'class;
       Event : GDK_Event;
       Data: T_Cell_Callback_Data) return Boolean;
-
-
 
    procedure free is new Ada.Unchecked_Deallocation(
       T_Main_Window_Record,T_Main_Window) ;
