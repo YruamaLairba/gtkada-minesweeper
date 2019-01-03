@@ -13,6 +13,10 @@ package body P_Main_Window is
       Width : Natural;
       Nb_Mine: Natural) is
       Frame1 : Gtk_Frame := Gtk_Frame_New;
+      Menu_Bar : Gtk_Menu_Bar;
+      Menu_Game : Gtk_Menu;
+      Menu_Item_Game : Gtk_Menu_Item;
+      Menu_Item_New : Gtk_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -33,7 +37,30 @@ package body P_Main_Window is
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
       Main_Window.Win.Set_Title("Minesweeper");
 
+      Menu_Bar := Gtk_Menu_Bar_New;
+      Menu_Bar.set_pack_direction(Pack_Direction_LTR) ;
+
+      Menu_Item_Game := Gtk_Menu_Item_New_With_Label("Game");
+      Menu_Bar.Append(Menu_Item_Game);
+
+      Menu_Game := Gtk_Menu_New;
+      Menu_Item_Game.Set_Submenu(Menu_Game);
+
+      Menu_Item_New := Gtk_Menu_Item_New_With_Label("New");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_New,
+         "activate",
+         New_Game_Callback'access,
+         Main_Window'unchecked_access);
+
+      Menu_Game.Append(Menu_Item_New);
+
       Gtk_New_Vbox(Main_Window.Vbox);
+      Main_Window.Vbox.Pack_Start(
+         Child=>Menu_Bar,
+         Expand=>false,
+         Fill=>false);
+
 
       Gtk_New(Main_Window.Counter,"Cnt");
 
@@ -252,6 +279,13 @@ package body P_Main_Window is
       Box.Pack_Start(Btn);
       Message_Win.Show_All;
    end End_Game;
+
+   procedure New_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+   begin
+      Put_Line("New Game");
+   end New_Game_Callback;
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;

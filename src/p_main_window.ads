@@ -11,6 +11,9 @@ with Gtk.Frame; use Gtk.Frame;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Handlers ;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Menu; use Gtk.Menu;
+with Gtk.Menu_Bar; use Gtk.Menu_Bar;
+with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Table; use Gtk.Table;
 with Gtk.HButton_Box ;   use Gtk.HButton_Box ;
@@ -40,6 +43,7 @@ package P_Main_Window is
       Hbox: Gtk_Hbox;
       Counter: Gtk_Label;
       Table: Gtk_Table;
+
       --Cells
       Cells : access T_Cell_Tab;
    end record;
@@ -97,8 +101,18 @@ package P_Main_Window is
 
    --procedure Loose(Main_Window: in out T_Main_Window_Record);
 
+   procedure New_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window);
+
    package P_Handlers is new Gtk.Handlers.Callback(Gtk_Widget_Record) ;
    use P_Handlers ;
+
+   package P_Menu_Item_UHandlers is new Gtk.Handlers.User_Callback(
+      Gtk_Menu_Item_Record,
+      T_Main_Window);
+   --use P_Menu_Item_UHandlers ;
+
    package P_Button_UHandlers is new Gtk.Handlers.User_Callback(
       Gtk_Button_Record,
       T_Cell) ;
@@ -123,6 +137,8 @@ package P_Main_Window is
       Emetteur : access Gtk_Button_Record'class;
       Event : GDK_Event;
       Data: T_Cell_Callback_Data) return Boolean;
+
+
 
    procedure free is new Ada.Unchecked_Deallocation(
       T_Main_Window_Record,T_Main_Window) ;
