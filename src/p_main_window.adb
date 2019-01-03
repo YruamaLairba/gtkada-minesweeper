@@ -7,7 +7,7 @@ package body P_Main_Window is
       Main_Quit;
    end Stop_Program ;
 
-   procedure Initialize(
+   procedure Init(
       Main_Window : not null access T_Main_Window_Record;
       Height: Natural;
       Width : Natural;
@@ -106,7 +106,7 @@ package body P_Main_Window is
       Connect(Main_Window.Win, "destroy", Stop_Program'access) ;
 
       Main_Window.Win.Show_All;
-   end Initialize;
+   end Init;
 
    function New_T_Main_Window(
       Height: Natural;
@@ -114,7 +114,7 @@ package body P_Main_Window is
       Nb_Mine: Natural) return T_Main_Window is
       Main_Window: T_Main_Window := new T_Main_Window_Record;
    begin
-      Main_Window.Initialize(Height, Width, Nb_Mine);
+      Main_Window.Init(Height, Width, Nb_Mine);
       return Main_Window;
    end New_T_Main_Window;
 

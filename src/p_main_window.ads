@@ -59,7 +59,7 @@ package P_Main_Window is
 
    procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class);
 
-   procedure Initialize(
+   procedure Init(
       Main_Window : not null access T_Main_Window_Record;
       Height: Natural;
       Width : Natural;
