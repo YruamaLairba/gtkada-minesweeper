@@ -8,7 +8,7 @@ package body P_Main_Window is
    end Stop_Program ;
 
    procedure Initialize(
-      Main_Window : in out T_Main_Window_Record;
+      Main_Window : not null access T_Main_Window_Record;
       Height: Natural;
       Width : Natural;
       Nb_Mine: Natural) is
@@ -51,7 +51,7 @@ package body P_Main_Window is
          Menu_Item_New,
          "activate",
          New_Game_Callback'access,
-         Main_Window'unchecked_access);
+         Main_Window);
 
       Menu_Game.Append(Menu_Item_New);
 
