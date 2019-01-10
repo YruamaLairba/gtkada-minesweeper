@@ -10,12 +10,16 @@ package body P_Cell is
    function  New_T_Cell return T_Cell is
       Cell : T_Cell := new T_Cell_Record;
    begin
-      Cell := new T_Cell_Record;
       Cell.Init;
       return Cell;
    end;
 
-   procedure Finalize (Cell: not null access T_Cell_Record) is
+   procedure Destroy (Cell: not null access T_Cell_Record) is
+   begin
+      Cell.Alignment.Destroy;
+   end Destroy;
+
+   procedure Finalize (Cell: in out T_Cell_Record) is
    begin
       null;
    end;

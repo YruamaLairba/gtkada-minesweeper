@@ -1,11 +1,12 @@
 
 package body P_Main_Window is
 
-   procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class) is
-      pragma Unreferenced (Emetteur );
+   procedure Stop_Program_Callback(
+      Emetteur : access Gtk_Window_Record'class;
+      Main_Window : T_Main_Window) is
    begin
       Main_Quit;
-   end Stop_Program ;
+   end Stop_Program_Callback ;
 
    procedure Init(
       Main_Window : not null access T_Main_Window_Record;
@@ -103,7 +104,11 @@ package body P_Main_Window is
 
 
       Main_Window.Set_Nb_Mine(Nb_Mine);
-      Connect(Main_Window.Win, "destroy", Stop_Program'access) ;
+      P_Window_UHandlers.Connect(
+         Main_Window.Win,
+         "destroy",
+         Stop_Program_Callback'access,
+         Main_Window) ;
 
       Main_Window.Win.Show_All;
    end Init;
@@ -119,7 +124,7 @@ package body P_Main_Window is
    end New_T_Main_Window;
 
    procedure Finalize(
-      Main_Window : not null access T_Main_Window_Record) is
+      Main_Window : in out T_Main_Window_Record) is
    begin
       if Main_Window.Cells /= null then
          for row in Main_Window.Cells'Range(1) loop

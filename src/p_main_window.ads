@@ -57,7 +57,6 @@ package P_Main_Window is
    end record;
 
 
-   procedure Stop_Program(Emetteur : access Gtk_Widget_Record'class);
 
    procedure Init(
       Main_Window : not null access T_Main_Window_Record;
@@ -71,7 +70,7 @@ package P_Main_Window is
       Nb_Mine: Natural) return T_Main_Window;
 
    procedure Finalize(
-      Main_Window : not null access T_Main_Window_Record);
+      Main_Window : in out T_Main_Window_Record);
 
    procedure Set_Nb_Mine(
       Main_Window: not null access T_Main_Window_Record;
@@ -101,12 +100,18 @@ package P_Main_Window is
       Main_Window: not null access T_Main_Window_Record;
       Win : boolean);
 
+   procedure Stop_Program_Callback(
+      Emetteur : access Gtk_Window_Record'class;
+      Main_Window : T_Main_Window);
+
    procedure New_Game_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
 
-   package P_Handlers is new Gtk.Handlers.Callback(Gtk_Widget_Record) ;
-   use P_Handlers ;
+   package P_Window_UHandlers is new Gtk.Handlers.User_Callback(
+      Gtk_Window_Record,
+      T_Main_Window) ;
+   --use P_Window_UHandlers ;
 
    package P_Menu_Item_UHandlers is new Gtk.Handlers.User_Callback(
       Gtk_Menu_Item_Record,

@@ -8,6 +8,7 @@ with Gtk.Enums; use Gtk.Enums;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Handlers ;
+with System.Address_Image;
 
 package P_Cell is
 
@@ -31,7 +32,9 @@ package P_Cell is
 
    function  New_T_Cell return T_Cell;
 
-   procedure Finalize (Cell: not null access T_Cell_Record);
+   procedure Destroy (Cell: not null access T_Cell_Record);
+
+   procedure Finalize (Cell: in out T_Cell_Record);
 
    procedure Dig(Cell: not null access T_Cell_Record);
 
