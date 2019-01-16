@@ -36,6 +36,7 @@ package P_Main_Window is
       Height: natural;
       Width: natural;
       Nb_Mine: natural;
+      Nb_Flag: natural;
       Nb_Unmined_Cell: natural;
       --Gui object
       Win: Gtk_Window;
@@ -75,9 +76,9 @@ package P_Main_Window is
    procedure Finalize(
       Main_Window : in out T_Main_Window_Record);
 
-   procedure Set_Nb_Mine(
+   procedure Set_Nb_Flag(
       Main_Window: not null access T_Main_Window_Record;
-      Nb_Mine : Natural);
+      Nb_Flag : Natural);
 
    procedure Place_Mine(
       Main_Window: not null access T_Main_Window_Record;
@@ -85,8 +86,10 @@ package P_Main_Window is
       col: Natural);
 
    procedure Place_Mines(
-      Main_Window: not null access T_Main_Window_Record;
-      Nb_Mine: Natural);
+      Main_Window: not null access T_Main_Window_Record);
+
+   procedure Reset_Cells(
+      Main_Window: not null access T_Main_Window_Record);
 
    procedure Dig_Around(
       Main_Window: not null access T_Main_Window_Record;

@@ -34,6 +34,7 @@ package body P_Main_Window is
       Main_Window.Height := Height;
       Main_Window.Width := Width;
       Main_Window.Nb_Mine := Nb_Mine;
+      Main_Window.Nb_Flag := Nb_Mine;
       Main_Window.Nb_Unmined_Cell := Height * Width - Nb_Mine;
       --Create and build gui object
       Gtk_New(GTK_Window(Main_Window.Win),Window_Toplevel) ;
@@ -94,7 +95,7 @@ package body P_Main_Window is
          end loop;
       end loop;
 
-      Main_Window.Place_Mines(Main_Window.Nb_Mine);
+      Main_Window.Place_Mines;
 
       Frame1.Add(Main_Window.Counter);
       Main_Window.Vbox.Pack_Start(
@@ -104,7 +105,7 @@ package body P_Main_Window is
       Main_Window.Win.Add(Main_Window.Vbox);
 
 
-      Main_Window.Set_Nb_Mine(Nb_Mine);
+      Main_Window.Set_Nb_Flag(Main_Window.Nb_Flag);
       P_Window_UHandlers.Connect(
          Main_Window.Win,
          "destroy",
@@ -156,12 +157,12 @@ package body P_Main_Window is
       end if;
    end Finalize;
 
-   procedure Set_Nb_Mine(
+   procedure Set_Nb_Flag(
       Main_Window : not null access T_Main_Window_Record;
-      Nb_Mine: Natural) is
+      Nb_Flag: Natural) is
    begin
-      Main_Window.Nb_Mine := Nb_Mine;
-      Main_Window.Counter.Set_Label(Natural'Image(Nb_Mine));
+      Main_Window.Nb_Flag := Nb_Flag;
+      Main_Window.Counter.Set_Label(Natural'Image(Nb_Flag));
    end;
 
    procedure Place_Mine(
@@ -191,8 +192,7 @@ package body P_Main_Window is
    end Place_Mine;
 
    procedure Place_Mines(
-      Main_Window: not null access T_Main_Window_Record;
-      Nb_Mine: Natural) is
+      Main_Window: not null access T_Main_Window_Record) is
       Gen : Generator;
       row: Natural;
       Col: Natural;
@@ -204,7 +204,7 @@ package body P_Main_Window is
       Add_C: Float := Float(Main_Window.Cells'First(2));
    begin
       Reset(Gen);
-      for M in 1..Nb_Mine loop
+      for M in 1..Main_Window.Nb_Mine loop
          loop
             row := Natural(Random(Gen) * Mult_R + Add_R);
             col := Natural(Random(Gen) * Mult_C + Add_C);
@@ -213,6 +213,16 @@ package body P_Main_Window is
          Place_Mine(Main_Window, row, col);
       end loop;
    end Place_Mines;
+
+   procedure Reset_Cells(
+      Main_Window: not null access T_Main_Window_Record) is
+   begin
+      for row in Main_Window.Cells'Range(1) loop
+         for col in Main_Window.Cells'Range(2) loop
+            Main_Window.Cells(row,col).Reset;
+         end loop;
+      end loop;
+   end Reset_Cells;
 
    procedure Dig_Around(
       Main_Window: not null access T_Main_Window_Record;
@@ -308,6 +318,11 @@ package body P_Main_Window is
       Main_Window : T_Main_Window) is
    begin
       Put_Line("New Game");
+      Main_Window.Reset_Cells;
+      Main_Window.Nb_Unmined_Cell := 
+         Main_Window.Height * Main_Window.Width - Main_Window.Nb_Mine;
+      Main_Window.Set_Nb_Flag(Main_Window.Nb_Mine);
+      Main_Window.Place_Mines;
    end New_Game_Callback;
 
    procedure Message_Ok_Callback(
@@ -334,15 +349,15 @@ package body P_Main_Window is
          when 3 =>
             case Cell.State is
                when Normal =>
-                  if Data.Main_Window.Nb_Mine > 0 then
+                  if Data.Main_Window.Nb_Flag > 0 then
                      Cell.Flag;
-                     Data.Main_Window.Set_Nb_Mine(
-                        Data.Main_Window.Nb_Mine - 1);
+                     Data.Main_Window.Set_Nb_Flag(
+                        Data.Main_Window.Nb_Flag - 1);
                   end if;
                when Flagged =>
                   Cell.Unflag;
-                  Data.Main_Window.Set_Nb_Mine(
-                     Data.Main_Window.Nb_Mine + 1);
+                  Data.Main_Window.Set_Nb_Flag(
+                     Data.Main_Window.Nb_Flag + 1);
                when others => null;
             end case;
          when others => null;

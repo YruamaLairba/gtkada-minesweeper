@@ -86,6 +86,18 @@ package body P_Cell is
       end case;
    end Win_Reveal;
 
+   procedure Reset(Cell: not null access T_Cell_Record) is
+   begin
+      Cell.Mined := false;
+      Cell.Nb_Foreign_Mine := 0;
+      Cell.State := Normal;
+      Cell.Button.Set_Image( Gtk_Image_New);
+      Cell.Button.Set_Label("");
+      Cell.Button.Set_Sensitive(true);
+      Cell.Button.Set_Relief(Relief_Normal);
+   end Reset;
+
+
    procedure Flag(Cell: not null access T_Cell_Record) is
    begin
       if Cell.State = Normal then
