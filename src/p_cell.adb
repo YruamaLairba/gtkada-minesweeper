@@ -16,6 +16,7 @@ package body P_Cell is
 
    procedure Destroy (Cell: not null access T_Cell_Record) is
    begin
+      Cell.Button.Destroy;
       Cell.Alignment.Destroy;
    end Destroy;
 

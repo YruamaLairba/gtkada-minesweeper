@@ -69,6 +69,9 @@ package P_Main_Window is
       Width : Natural;
       Nb_Mine: Natural) return T_Main_Window;
 
+   procedure Destroy (
+      Main_Window: not null access T_Main_Window_Record);
+
    procedure Finalize(
       Main_Window : in out T_Main_Window_Record);
 

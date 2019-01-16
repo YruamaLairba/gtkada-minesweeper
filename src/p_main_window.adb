@@ -5,6 +5,7 @@ package body P_Main_Window is
       Emetteur : access Gtk_Window_Record'class;
       Main_Window : T_Main_Window) is
    begin
+      Main_Window.Win.Destroy;
       Main_Quit;
    end Stop_Program_Callback ;
 
@@ -123,13 +124,32 @@ package body P_Main_Window is
       return Main_Window;
    end New_T_Main_Window;
 
+   procedure Destroy (
+      Main_Window: not null access T_Main_Window_Record) is
+   begin
+      if Main_Window.Cells /= null then
+         for row in Main_Window.Cells'Range(1) loop
+            for col in Main_Window.Cells'Range(2) loop
+               if (Main_Window.Cells(row,col) /= null) then
+                  Main_Window.Cells(row,col).Destroy;
+                  free(Main_Window.Cells(row,col));
+               end if;
+            end loop;
+         end loop;
+         free(Main_Window.Cells);
+      end if;
+   end;
+
+
    procedure Finalize(
       Main_Window : in out T_Main_Window_Record) is
    begin
       if Main_Window.Cells /= null then
          for row in Main_Window.Cells'Range(1) loop
             for col in Main_Window.Cells'Range(2) loop
-               free(Main_Window.Cells(row,col));
+               if (Main_Window.Cells(row,col) /= null) then
+                  free(Main_Window.Cells(row,col));
+               end if;
             end loop;
          end loop;
          free(Main_Window.Cells);
