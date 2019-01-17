@@ -313,9 +313,8 @@ package body P_Main_Window is
       Message_Win.Show_All;
    end End_Game;
 
-   procedure New_Game_Callback(
-      Emitter : access Gtk_Menu_Item_Record'class;
-      Main_Window : T_Main_Window) is
+   procedure New_Game(
+      Main_Window: not null access T_Main_Window_Record) is
    begin
       Put_Line("New Game");
       Main_Window.Reset_Cells;
@@ -323,6 +322,13 @@ package body P_Main_Window is
          Main_Window.Height * Main_Window.Width - Main_Window.Nb_Mine;
       Main_Window.Set_Nb_Flag(Main_Window.Nb_Mine);
       Main_Window.Place_Mines;
+   end New_Game;
+
+   procedure New_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+   begin
+      Main_Window.New_Game;
    end New_Game_Callback;
 
    procedure Message_Ok_Callback(

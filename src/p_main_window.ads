@@ -106,6 +106,9 @@ package P_Main_Window is
       Main_Window: not null access T_Main_Window_Record;
       Win : boolean);
 
+   procedure New_Game(
+      Main_Window: not null access T_Main_Window_Record);
+
    procedure Stop_Program_Callback(
       Emetteur : access Gtk_Window_Record'class;
       Main_Window : T_Main_Window);
