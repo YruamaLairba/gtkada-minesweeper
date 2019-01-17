@@ -19,6 +19,7 @@ package body P_Main_Window is
       Menu_Game : Gtk_Menu;
       Menu_Item_Game : Gtk_Menu_Item;
       Menu_Item_New : Gtk_Menu_Item;
+      Menu_Item_New_Grid : Gtk_Menu_Item;
       Menu_Item_Destroy_Grid : Gtk_Menu_Item;
    begin
       --Constraint Check
@@ -59,6 +60,14 @@ package body P_Main_Window is
 
       Menu_Game.Append(Menu_Item_New);
 
+      Menu_Item_New_Grid := Gtk_Menu_Item_New_With_Label("New Grid");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_New_Grid,
+         "activate",
+         New_Grid_Callback'access,
+         Main_Window);
+      Menu_Game.Append(Menu_Item_New_Grid);
+      
       Menu_Item_Destroy_Grid := Gtk_Menu_Item_New_With_Label("Destroy Grid");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_Destroy_Grid,
@@ -233,6 +242,39 @@ package body P_Main_Window is
       end loop;
    end Reset_Cells;
 
+   procedure New_Grid(
+      Main_Window: not null access T_Main_Window_Record;
+      Height: Natural;
+      Width: Natural) is
+   begin
+      Put_Line("New Grid");
+      Main_Window.Height := Height;
+      Main_Window.Width := Width;
+      
+      Main_Window.Cells := new T_Cell_Tab(
+         1..Main_Window.Height,
+         1..Main_Window.Width);
+
+      for row in Main_Window.Cells'Range(1) loop
+         for col in Main_Window.Cells'Range(2) loop
+            Main_Window.Cells(row, col) := New_T_Cell;
+            Main_Window.Table.Attach(
+               Main_Window.Cells(row,col).Alignment,
+               Guint(col-1),
+               Guint(col),
+               Guint(row-1),
+               Guint(row));
+            Connect(
+               Main_Window.Cells(row,col).Button,
+               "button_press_event",
+               To_Marshaller(Cell_Clicked_Callback'access),
+               T_Cell_Callback_Data'(Main_Window,Row,Col));
+         end loop;
+      end loop;
+      Main_Window.Table.Resize(Guint(Height),Guint(Width));
+      Main_Window.Win.Show_All;
+   end New_Grid;
+
    procedure Destroy_Grid (
       Main_Window: not null access T_Main_Window_Record) is
    begin
@@ -364,6 +406,13 @@ package body P_Main_Window is
    begin
       Main_Window.New_Game;
    end New_Game_Callback;
+
+   procedure New_Grid_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+   begin
+      Main_Window.New_Grid(5,5);
+   end;
 
    procedure Destroy_Grid_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
