@@ -91,6 +91,9 @@ package P_Main_Window is
    procedure Reset_Cells(
       Main_Window: not null access T_Main_Window_Record);
 
+   procedure Destroy_Grid(
+      Main_Window: not null access T_Main_Window_Record);
+
    procedure Dig_Around(
       Main_Window: not null access T_Main_Window_Record;
       Row : Natural;
@@ -109,11 +112,21 @@ package P_Main_Window is
    procedure New_Game(
       Main_Window: not null access T_Main_Window_Record);
 
+   procedure New_Game(
+      Main_Window: not null access T_Main_Window_Record;
+      Height: Natural;
+      Width: Natural;
+      Nb_Mine: Natural);
+
    procedure Stop_Program_Callback(
       Emetteur : access Gtk_Window_Record'class;
       Main_Window : T_Main_Window);
 
    procedure New_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window);
+
+   procedure Destroy_Grid_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
 

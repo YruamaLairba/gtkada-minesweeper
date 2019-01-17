@@ -19,6 +19,7 @@ package body P_Main_Window is
       Menu_Game : Gtk_Menu;
       Menu_Item_Game : Gtk_Menu_Item;
       Menu_Item_New : Gtk_Menu_Item;
+      Menu_Item_Destroy_Grid : Gtk_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -57,6 +58,14 @@ package body P_Main_Window is
          Main_Window);
 
       Menu_Game.Append(Menu_Item_New);
+
+      Menu_Item_Destroy_Grid := Gtk_Menu_Item_New_With_Label("Destroy Grid");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_Destroy_Grid,
+         "activate",
+         Destroy_Grid_Callback'access,
+         Main_Window);
+      Menu_Game.Append(Menu_Item_Destroy_Grid);
 
       Gtk_New_Vbox(Main_Window.Vbox);
       Main_Window.Vbox.Pack_Start(
@@ -224,6 +233,22 @@ package body P_Main_Window is
       end loop;
    end Reset_Cells;
 
+   procedure Destroy_Grid (
+      Main_Window: not null access T_Main_Window_Record) is
+   begin
+      if Main_Window.Cells /= null then
+         for row in Main_Window.Cells'Range(1) loop
+            for col in Main_Window.Cells'Range(2) loop
+               if (Main_Window.Cells(row,col) /= null) then
+                  Main_Window.Cells(row,col).Destroy;
+                  free(Main_Window.Cells(row,col));
+               end if;
+            end loop;
+         end loop;
+         free(Main_Window.Cells);
+      end if;
+   end Destroy_Grid;
+
    procedure Dig_Around(
       Main_Window: not null access T_Main_Window_Record;
       Row : Natural;
@@ -324,12 +349,28 @@ package body P_Main_Window is
       Main_Window.Place_Mines;
    end New_Game;
 
+   procedure New_Game(
+      Main_Window: not null access T_Main_Window_Record;
+      Height: Natural;
+      Width: Natural;
+      Nb_Mine: Natural) is
+   begin
+      null;
+   end New_Game;
+
    procedure New_Game_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window) is
    begin
       Main_Window.New_Game;
    end New_Game_Callback;
+
+   procedure Destroy_Grid_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+   begin
+      Main_Window.Destroy_Grid;
+   end Destroy_Grid_Callback;
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;
