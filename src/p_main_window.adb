@@ -19,6 +19,7 @@ package body P_Main_Window is
       Menu_Game : Gtk_Menu;
       Menu_Item_Game : Gtk_Menu_Item;
       Menu_Item_New : Gtk_Menu_Item;
+      Menu_Item_Beginner_Game : Gtk_Menu_Item;
       Menu_Item_New_Grid : Gtk_Menu_Item;
       Menu_Item_Destroy_Grid : Gtk_Menu_Item;
    begin
@@ -60,6 +61,14 @@ package body P_Main_Window is
 
       Menu_Game.Append(Menu_Item_New);
 
+      Menu_Item_Beginner_Game := Gtk_Menu_Item_New_With_Label("Beginner");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_Beginner_Game,
+         "activate",
+         Beginner_Game_Callback'access,
+         Main_Window);
+      Menu_Game.Append(Menu_Item_Beginner_Game);
+      
       Menu_Item_New_Grid := Gtk_Menu_Item_New_With_Label("New Grid");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_New_Grid,
@@ -158,7 +167,6 @@ package body P_Main_Window is
          free(Main_Window.Cells);
       end if;
    end;
-
 
    procedure Finalize(
       Main_Window : in out T_Main_Window_Record) is
@@ -397,7 +405,15 @@ package body P_Main_Window is
       Width: Natural;
       Nb_Mine: Natural) is
    begin
-      null;
+      Main_Window.Destroy_Grid;
+      Main_Window.Height := Height;
+      Main_Window.Width := Width;
+      Main_Window.Nb_Mine := Nb_Mine;
+      Main_Window.Nb_Flag := Nb_Mine;
+      Main_Window.Set_Nb_Flag(Nb_Mine);
+      Main_Window.Nb_Unmined_Cell := Height * Width - Nb_Mine;
+      Main_Window.New_Grid(Height,Width);
+      Main_Window.Place_Mines;
    end New_Game;
 
    procedure New_Game_Callback(
@@ -420,6 +436,13 @@ package body P_Main_Window is
    begin
       Main_Window.Destroy_Grid;
    end Destroy_Grid_Callback;
+
+   procedure Beginner_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+   begin
+      Main_Window.New_Game(9,9,10);
+   end Beginner_Game_Callback;
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;
