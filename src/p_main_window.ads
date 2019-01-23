@@ -143,6 +143,10 @@ package P_Main_Window is
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
 
+   procedure Advanced_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window);
+
    package P_Window_UHandlers is new Gtk.Handlers.User_Callback(
       Gtk_Window_Record,
       T_Main_Window) ;
