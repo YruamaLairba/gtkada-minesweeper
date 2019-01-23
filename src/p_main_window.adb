@@ -21,6 +21,7 @@ package body P_Main_Window is
       Menu_Item_New : Gtk_Menu_Item;
       Menu_Item_Beginner_Game : Gtk_Menu_Item;
       Menu_Item_Advanced_Game : Gtk_Menu_Item;
+      Menu_Item_Expert_Game : Gtk_Menu_Item;
       Menu_Item_New_Grid : Gtk_Menu_Item;
       Menu_Item_Destroy_Grid : Gtk_Menu_Item;
    begin
@@ -77,6 +78,14 @@ package body P_Main_Window is
          Advanced_Game_Callback'access,
          Main_Window);
       Menu_Game.Append(Menu_Item_Advanced_Game);
+
+      Menu_Item_Expert_Game := Gtk_Menu_Item_New_With_Label("Expert");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_Expert_Game,
+         "activate",
+         Expert_Game_Callback'access,
+         Main_Window);
+      Menu_Game.Append(Menu_Item_Expert_Game);
 
       Menu_Item_New_Grid := Gtk_Menu_Item_New_With_Label("New Grid");
       P_Menu_Item_UHandlers.Connect(
@@ -459,6 +468,13 @@ package body P_Main_Window is
    begin
       Main_Window.New_Game(16,16,40);
    end Advanced_Game_Callback;
+
+   procedure Expert_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+   begin
+      Main_Window.New_Game(16,30,99);
+   end Expert_Game_Callback;
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;
