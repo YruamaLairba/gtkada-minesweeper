@@ -22,8 +22,6 @@ package body P_Main_Window is
       Menu_Item_Beginner_Game : Gtk_Menu_Item;
       Menu_Item_Advanced_Game : Gtk_Menu_Item;
       Menu_Item_Expert_Game : Gtk_Menu_Item;
-      Menu_Item_New_Grid : Gtk_Menu_Item;
-      Menu_Item_Destroy_Grid : Gtk_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -86,22 +84,6 @@ package body P_Main_Window is
          Expert_Game_Callback'access,
          Main_Window);
       Menu_Game.Append(Menu_Item_Expert_Game);
-
-      Menu_Item_New_Grid := Gtk_Menu_Item_New_With_Label("New Grid");
-      P_Menu_Item_UHandlers.Connect(
-         Menu_Item_New_Grid,
-         "activate",
-         New_Grid_Callback'access,
-         Main_Window);
-      Menu_Game.Append(Menu_Item_New_Grid);
-
-      Menu_Item_Destroy_Grid := Gtk_Menu_Item_New_With_Label("Destroy Grid");
-      P_Menu_Item_UHandlers.Connect(
-         Menu_Item_Destroy_Grid,
-         "activate",
-         Destroy_Grid_Callback'access,
-         Main_Window);
-      Menu_Game.Append(Menu_Item_Destroy_Grid);
 
       Gtk_New_Vbox(Main_Window.Vbox);
       Main_Window.Vbox.Pack_Start(
