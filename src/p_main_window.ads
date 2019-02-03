@@ -15,6 +15,8 @@ with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Bar; use Gtk.Menu_Bar;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Spin_Button; use Gtk.Spin_Button;
+with Gtk.Stock; use Gtk.Stock;
 with Gtk.Table; use Gtk.Table;
 with Gtk.HButton_Box ;   use Gtk.HButton_Box ;
 with Gtk.Main; use Gtk.Main;
@@ -151,6 +153,10 @@ package P_Main_Window is
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
 
+   procedure Custom_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window);
+
    package P_Window_UHandlers is new Gtk.Handlers.User_Callback(
       Gtk_Window_Record,
       T_Main_Window) ;
@@ -176,6 +182,13 @@ package P_Main_Window is
       Gtk_Button_Record,
       Gtk_Window) ;
    use P_Message_Ok_URHandlers ;
+
+   type Gtk_Dialog_Access is access all Gtk_Dialog;
+   package Destroy_Dialog_Handler is new Gtk.Handlers.User_Callback(
+         Gtk_Dialog_Record,
+         Gtk_Dialog);
+   procedure Destroy_Dialog (Win : access Gtk_Dialog_Record'Class;
+      Ptr : Gtk_Dialog);
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;

@@ -22,6 +22,7 @@ package body P_Main_Window is
       Menu_Item_Beginner_Game : Gtk_Menu_Item;
       Menu_Item_Advanced_Game : Gtk_Menu_Item;
       Menu_Item_Expert_Game : Gtk_Menu_Item;
+      Menu_Item_Custom_Game : Gtk_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -84,6 +85,14 @@ package body P_Main_Window is
          Expert_Game_Callback'access,
          Main_Window);
       Menu_Game.Append(Menu_Item_Expert_Game);
+
+      Menu_Item_Custom_Game := Gtk_Menu_Item_New_With_Label("Custom");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_Custom_Game,
+         "activate",
+         Custom_Game_Callback'access,
+         Main_Window);
+      Menu_Game.Append(Menu_Item_Custom_Game);
 
       Gtk_New_Vbox(Main_Window.Vbox);
       Main_Window.Vbox.Pack_Start(
@@ -457,6 +466,102 @@ package body P_Main_Window is
    begin
       Main_Window.New_Game(16,30,99);
    end Expert_Game_Callback;
+
+   procedure Destroy_Dialog (Win : access Gtk_Dialog_Record'Class;
+      Ptr : Gtk_Dialog) is
+   begin
+      Put_Line("Destroy_Dialog");
+      Win.Destroy;
+   end;
+
+   procedure Custom_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+      Custom_Game_Dialog : Gtk_Dialog;
+      Response : Gtk_Response_Type;
+      Table: Gtk_Table;
+   begin
+      Custom_Game_Dialog := Gtk_Dialog_New(
+         Title=>"Custom Game",
+         Parent=>Main_Window.Win,
+         Flags=>Destroy_With_Parent );
+
+      Gtk_New(
+         Table,
+         Guint(3),
+         Guint(2),
+         false);
+
+      Custom_Game_Dialog.Get_Content_Area.
+         Pack_Start(Table);
+
+         Table.Attach(Gtk_Label_New("Height"),
+            Guint(0),
+            Guint(1),
+            Guint(0),
+            Guint(1)
+         );
+         Table.Attach(
+            Gtk_Spin_Button_New_With_Range(
+               Gdouble(0),
+               Gdouble(99),
+               Gdouble(1)),
+            Guint(1),
+            Guint(2),
+            Guint(0),
+            Guint(1));
+
+         Table.Attach(Gtk_Label_New("Width"),
+            Guint(0),
+            Guint(1),
+            Guint(1),
+            Guint(2)
+         );
+         Table.Attach(
+            Gtk_Spin_Button_New_With_Range(
+               Gdouble(0),
+               Gdouble(99),
+               Gdouble(1)),
+            Guint(1),
+            Guint(2),
+            Guint(1),
+            Guint(2));
+
+         Table.Attach(Gtk_Label_New("Mines"),
+            Guint(0),
+            Guint(1),
+            Guint(2),
+            Guint(3)
+         );
+         Table.Attach(
+            Gtk_Spin_Button_New_With_Range(
+               Gdouble(0),
+               Gdouble(99),
+               Gdouble(1)),
+            Guint(1),
+            Guint(2),
+            Guint(2),
+            Guint(3));
+
+      Custom_Game_Dialog.Add_Action_Widget(
+         Gtk_Button_New_From_Stock(Stock_Ok),
+         Gtk_Response_Ok);
+
+      Custom_Game_Dialog.Add_Action_Widget(
+         Gtk_Button_New_From_Stock(Stock_Cancel),
+         Gtk_Response_Cancel);
+
+      --Custom_Game_Dialog.Set_Title("Custom Game");
+      Custom_Game_Dialog.Show_All;
+      Response := Custom_Game_Dialog.Run;
+
+      if Response = Gtk_Response_Ok then
+         Main_Window.New_Game(9,9,10);
+      end if;
+
+      Custom_Game_Dialog.Destroy;
+   end Custom_Game_Callback;
+
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;
