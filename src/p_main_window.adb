@@ -480,6 +480,9 @@ package body P_Main_Window is
       Custom_Game_Dialog : Gtk_Dialog;
       Response : Gtk_Response_Type;
       Table: Gtk_Table;
+      Height_Field : Gtk_Spin_Button;
+      Width_Field : Gtk_Spin_Button;
+      Nb_Mine_Field : Gtk_Spin_Button;
    begin
       Custom_Game_Dialog := Gtk_Dialog_New(
          Title=>"Custom Game",
@@ -492,6 +495,28 @@ package body P_Main_Window is
          Guint(2),
          false);
 
+      Gtk_New(
+         Height_Field,
+         Gdouble(0),
+         Gdouble(99),
+         Gdouble(1));
+      Height_Field.Set_Value(Gdouble(Main_Window.Height));
+
+      Gtk_New(
+         Width_Field,
+         Gdouble(0),
+         Gdouble(99),
+         Gdouble(1));
+      Width_Field.Set_Value(Gdouble(Main_Window.Width));
+
+      Gtk_New(
+         Nb_Mine_Field,
+         Gdouble(0),
+         Gdouble(99),
+         Gdouble(1));
+      Nb_Mine_Field.Set_Value(Gdouble(Main_Window.Nb_Mine));
+
+
       Custom_Game_Dialog.Get_Content_Area.
          Pack_Start(Table);
 
@@ -502,10 +527,7 @@ package body P_Main_Window is
             Guint(1)
          );
          Table.Attach(
-            Gtk_Spin_Button_New_With_Range(
-               Gdouble(0),
-               Gdouble(99),
-               Gdouble(1)),
+            Height_Field,
             Guint(1),
             Guint(2),
             Guint(0),
@@ -518,10 +540,7 @@ package body P_Main_Window is
             Guint(2)
          );
          Table.Attach(
-            Gtk_Spin_Button_New_With_Range(
-               Gdouble(0),
-               Gdouble(99),
-               Gdouble(1)),
+            Width_Field,
             Guint(1),
             Guint(2),
             Guint(1),
@@ -534,10 +553,7 @@ package body P_Main_Window is
             Guint(3)
          );
          Table.Attach(
-            Gtk_Spin_Button_New_With_Range(
-               Gdouble(0),
-               Gdouble(99),
-               Gdouble(1)),
+            Nb_Mine_Field,
             Guint(1),
             Guint(2),
             Guint(2),
@@ -556,7 +572,10 @@ package body P_Main_Window is
       Response := Custom_Game_Dialog.Run;
 
       if Response = Gtk_Response_Ok then
-         Main_Window.New_Game(9,9,10);
+         Main_Window.New_Game(
+            Integer(Height_Field.Get_Value),
+            Integer(Width_Field.Get_Value),
+            Integer(Nb_Mine_Field.Get_Value));
       end if;
 
       Custom_Game_Dialog.Destroy;
