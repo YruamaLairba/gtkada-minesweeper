@@ -434,6 +434,16 @@ package body P_Main_Window is
       Main_Window.Place_Mines;
    end New_Game;
 
+   procedure Set_Cell_Style(
+      Main_Window: not null access T_Main_Window_Record;
+      Style : T_Style) is
+   begin
+      for Cell of Main_Window.Cells.all loop
+         Cell.Style := Style;
+      end loop;
+   end Set_Cell_Style;
+
+
    procedure New_Game_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window) is
@@ -624,7 +634,10 @@ package body P_Main_Window is
       Response := Style_Dialog.Run;
 
       if Response = Gtk_Response_Ok then
-         null;
+         if Choice_Box.Get_Active_Text /= "" then
+            Main_Window.Set_Cell_Style(
+               T_Style'Value(Choice_Box.Get_Active_Text));
+         end if;
       end if;
 
       Style_Dialog.Destroy;

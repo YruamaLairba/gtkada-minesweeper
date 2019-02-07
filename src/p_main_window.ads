@@ -126,6 +126,10 @@ package P_Main_Window is
       Width: Natural;
       Nb_Mine: Natural);
 
+   procedure Set_Cell_Style(
+      Main_Window: not null access T_Main_Window_Record;
+      Style : T_Style);
+
    procedure Stop_Program_Callback(
       Emetteur : access Gtk_Window_Record'class;
       Main_Window : T_Main_Window);
