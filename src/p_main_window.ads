@@ -6,6 +6,7 @@ with Glib; use Glib;
 with Gdk.Event; use Gdk.Event;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
+with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.Enums; use Gtk.Enums;
@@ -154,6 +155,10 @@ package P_Main_Window is
       Main_Window : T_Main_Window);
 
    procedure Custom_Game_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window);
+
+   procedure Style_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
 

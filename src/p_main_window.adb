@@ -23,6 +23,7 @@ package body P_Main_Window is
       Menu_Item_Advanced_Game : Gtk_Menu_Item;
       Menu_Item_Expert_Game : Gtk_Menu_Item;
       Menu_Item_Custom_Game : Gtk_Menu_Item;
+      Menu_Item_Style : Gtk_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -93,6 +94,14 @@ package body P_Main_Window is
          Custom_Game_Callback'access,
          Main_Window);
       Menu_Game.Append(Menu_Item_Custom_Game);
+
+      Menu_Item_Style := Gtk_Menu_Item_New_With_Label("Style");
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_Style,
+         "activate",
+         Style_Callback'access,
+         Main_Window);
+      Menu_Game.Append(Menu_Item_Style);
 
       Gtk_New_Vbox(Main_Window.Vbox);
       Main_Window.Vbox.Pack_Start(
@@ -580,6 +589,46 @@ package body P_Main_Window is
 
       Custom_Game_Dialog.Destroy;
    end Custom_Game_Callback;
+
+   procedure Style_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+      Style_Dialog : Gtk_Dialog;
+      Response : Gtk_Response_Type;
+      Choice_Box : Gtk_Combo_Box_Text;
+   begin
+      Style_Dialog := Gtk_Dialog_New(
+         Title=>"Custom Game",
+         Parent=>Main_Window.Win,
+         Flags=>Destroy_With_Parent );
+
+      Gtk_New(Choice_Box);
+
+      for i in T_Style'range loop
+         Choice_Box.Append_Text(T_Style'Image(i));
+      end loop;
+
+      Style_Dialog.Get_Content_Area.
+         Pack_Start(Choice_Box);
+
+      Style_Dialog.Add_Action_Widget(
+         Gtk_Button_New_From_Stock(Stock_Ok),
+         Gtk_Response_Ok);
+
+      Style_Dialog.Add_Action_Widget(
+         Gtk_Button_New_From_Stock(Stock_Cancel),
+         Gtk_Response_Cancel);
+
+      --Style_Dialog.Set_Title("Custom Game");
+      Style_Dialog.Show_All;
+      Response := Style_Dialog.Run;
+
+      if Response = Gtk_Response_Ok then
+         null;
+      end if;
+
+      Style_Dialog.Destroy;
+   end Style_Callback;
 
 
    procedure Message_Ok_Callback(
