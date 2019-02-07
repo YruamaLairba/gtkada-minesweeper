@@ -14,11 +14,29 @@ package P_Cell is
 
    type T_Cell_State is (Normal, Digged, Flagged);
 
+   type T_Cell_Icons is record
+      Mine: Gtk_Image; --Mine revealed when loosing
+      Explode: Gtk_Image;--Cell exploding because mined and clicked
+      Flag: Gtk_Image;--Flag
+      Wrong_Flag: Gtk_Image;--When loosing, Misplaced Flag
+   end record;
+
+   type T_Style is (Style1,Style2);
+
+   function Get_Mine_Filename(Style : T_Style) return String;
+
+   function Get_Explode_Filename(Style : T_Style) return String;
+
+   function Get_Flag_Filename(Style : T_Style) return String;
+
+   function Get_Wrong_Flag_Filename(Style : T_Style) return String;
+
    type T_Cell_Record is new Controlled with record
       --Some data
       Mined: Boolean := false;
       Nb_Foreign_Mine : Natural := 0;
       State: T_Cell_State := Normal;
+      Style : T_Style := Style1;
       --Gui object
       Alignment: Gtk_Alignment;
       Button: Gtk_Button;

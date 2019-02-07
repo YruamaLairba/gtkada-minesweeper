@@ -1,5 +1,37 @@
 package body P_Cell is
 
+   function Get_Mine_Filename(Style : T_Style) return String is
+   begin
+      case Style is
+         when Style1 => return "share/icons/mine-noire.png";
+         when Style2 => return "share/icons/style2/mine.png";
+      end case;
+   end Get_Mine_Filename;
+
+   function Get_Explode_Filename(Style : T_Style) return String is
+   begin
+      case Style is
+         when Style1 => return "share/icons/mine-rouge.png";
+         when Style2 => return "share/icons/style2/explode.png";
+      end case;
+   end Get_Explode_Filename;
+
+   function Get_Flag_Filename(Style : T_Style) return String is
+   begin
+      case Style is
+         when Style1 => return "share/icons/drapeaux-bleu.png";
+         when Style2 => return "share/icons/style2/flag.png";
+      end case;
+   end Get_Flag_Filename;
+
+   function Get_Wrong_Flag_Filename(Style : T_Style) return String is
+   begin
+      case Style is
+         when Style1 => return "share/icons/drapeaux-bleu-barre.png";
+         when Style2 => return "share/icons/style2/wrong-flag.png";
+      end case;
+   end Get_Wrong_Flag_Filename;
+
    procedure Init (Cell: not null access T_Cell_Record) is
    begin
       Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
@@ -33,7 +65,7 @@ package body P_Cell is
          Cell.Button.Set_Sensitive(false);
          if Cell.Mined then
             Cell.Button.Set_Image(
-               Gtk_Image_New_From_File("share/icons/mine-rouge.png"));
+               Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
          else
             case Cell.Nb_Foreign_Mine is
                when 0 => Cell.Button.Set_Label("");
@@ -59,13 +91,13 @@ package body P_Cell is
             if Cell.Mined then
                Cell.Button.Set_Relief(Relief_None);
                Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File("share/icons/mine-noire.png"));
+                  Gtk_Image_New_From_File(Get_Mine_Filename(Cell.Style)));
             end if;
          when Flagged =>
             if not Cell.Mined then
                Cell.Button.Set_Image(
                   Gtk_Image_New_From_File(
-                     "share/icons/drapeau-bleu-barre.png"));
+                     Get_Wrong_Flag_Filename(Cell.Style)));
             end if;
          when others =>
             null;
@@ -79,7 +111,7 @@ package body P_Cell is
          when Normal =>
             if Cell.Mined then
                Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
+                  Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
             end if;
          when others =>
             null;
@@ -103,7 +135,7 @@ package body P_Cell is
       if Cell.State = Normal then
          Cell.State := Flagged;
          Cell.Button.Set_Image(
-            Gtk_Image_New_From_File("share/icons/drapeau-bleu.png"));
+            Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
       end if;
    end Flag;
 
