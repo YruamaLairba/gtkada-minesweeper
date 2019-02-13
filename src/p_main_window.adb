@@ -24,6 +24,9 @@ package body P_Main_Window is
       Menu_Item_Expert_Game : Gtk_Menu_Item;
       Menu_Item_Custom_Game : Gtk_Menu_Item;
       Menu_Item_Style : Gtk_Menu_Item;
+      Menu_Help : Gtk_Menu;
+      Menu_Item_Help : Gtk_Menu_Item;
+      Menu_Item_About : Gtk_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -103,11 +106,25 @@ package body P_Main_Window is
          Main_Window);
       Menu_Game.Append(Menu_Item_Style);
 
+      Menu_Item_Help := Gtk_Menu_Item_New_With_Label("?");
+      Menu_Bar.Append(Menu_Item_Help);
+
+      Menu_Help := Gtk_Menu_New;
+      Menu_Item_Help.Set_Submenu(Menu_Help);
+
       Gtk_New_Vbox(Main_Window.Vbox);
       Main_Window.Vbox.Pack_Start(
          Child=>Menu_Bar,
          Expand=>false,
          Fill=>false);
+
+      Menu_Item_About := Gtk_Menu_Item_New_With_Label("About");
+     -- P_Menu_Item_UHandlers.Connect(
+     --    Menu_Item_About,
+     --    "activate",
+     --    New_Game_Callback'access,
+     --    Main_Window);
+      Menu_Help.Append(Menu_Item_About);
 
 
       Gtk_New(Main_Window.Counter,"Cnt");
