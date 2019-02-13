@@ -119,11 +119,11 @@ package body P_Main_Window is
          Fill=>false);
 
       Menu_Item_About := Gtk_Menu_Item_New_With_Label("About");
-     -- P_Menu_Item_UHandlers.Connect(
-     --    Menu_Item_About,
-     --    "activate",
-     --    New_Game_Callback'access,
-     --    Main_Window);
+      P_Menu_Item_UHandlers.Connect(
+         Menu_Item_About,
+         "activate",
+         About_Callback'access,
+         Main_Window);
       Menu_Help.Append(Menu_Item_About);
 
 
@@ -660,6 +660,20 @@ package body P_Main_Window is
       Style_Dialog.Destroy;
    end Style_Callback;
 
+   procedure About_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window) is
+      About_Dialog: Gtk_About_Dialog;
+      Response : GTK_Response_Type;
+   begin
+      About_Dialog := Gtk_About_Dialog_New;
+      About_Dialog.Set_Transient_For(Main_Window.Win);
+      About_Dialog.Set_Comments(
+         "Minesweeper is build by following practictal exercise proposed by Openclassroom ada courses (see https://openclassrooms.com/fr/courses/900279-apprenez-a-programmer-avec-ada)");
+      About_Dialog.Show_All;
+      Response := About_Dialog.Run;
+      About_Dialog.Destroy;
+   end About_Callback;
 
    procedure Message_Ok_Callback(
       Emitter : access Gtk_Button_Record'Class;
