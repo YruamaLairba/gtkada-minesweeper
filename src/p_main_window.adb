@@ -667,11 +667,16 @@ package body P_Main_Window is
       Response : GTK_Response_Type;
       Logo : Gdk_Pixbuf;
       Error: GError;
+      type T_Authors is array(1..1) of access String;
+      Authors : GNAT.Strings.String_List(1..1);
    begin
       About_Dialog := Gtk_About_Dialog_New;
       About_Dialog.Set_Transient_For(Main_Window.Win);
       Gdk_New_From_File(Logo, "share/logos/mine-logo.png", Error);
       About_Dialog.Set_Logo(Logo);
+
+      Authors(1):= new String'("Yruama_Lairba")  ;
+      About_Dialog.Set_Authors(Authors);
       About_Dialog.Set_Comments(
          "Minesweeper is build by following practictal exercise proposed by Openclassroom ada courses (see https://openclassrooms.com/fr/courses/900279-apprenez-a-programmer-avec-ada)");
       About_Dialog.Show_All;

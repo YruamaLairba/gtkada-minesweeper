@@ -2,6 +2,7 @@ with Ada.Numerics.Float_Random; use Ada.Numerics.Float_Random;
 with Ada.Text_io; use Ada.Text_io;
 with Ada.Finalization; use Ada.Finalization;
 with Ada.Unchecked_Deallocation ;
+with GNAT.Strings; use GNAT.Strings;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with Gdk.Event; use Gdk.Event;
