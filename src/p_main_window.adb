@@ -665,9 +665,13 @@ package body P_Main_Window is
       Main_Window : T_Main_Window) is
       About_Dialog: Gtk_About_Dialog;
       Response : GTK_Response_Type;
+      Logo : Gdk_Pixbuf;
+      Error: GError;
    begin
       About_Dialog := Gtk_About_Dialog_New;
       About_Dialog.Set_Transient_For(Main_Window.Win);
+      Gdk_New_From_File(Logo, "share/logos/mine-logo.png", Error);
+      About_Dialog.Set_Logo(Logo);
       About_Dialog.Set_Comments(
          "Minesweeper is build by following practictal exercise proposed by Openclassroom ada courses (see https://openclassrooms.com/fr/courses/900279-apprenez-a-programmer-avec-ada)");
       About_Dialog.Show_All;
