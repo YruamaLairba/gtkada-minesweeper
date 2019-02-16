@@ -18,16 +18,16 @@ package body P_Main_Window is
       Menu_Bar : Gtk_Menu_Bar;
       Menu_Game : Gtk_Menu;
       Menu_Item_Game : Gtk_Menu_Item;
-      Menu_Item_New : Gtk_Menu_Item;
+      Menu_Item_New : Gtk_Image_Menu_Item;
       Menu_Item_Beginner_Game : Gtk_Menu_Item;
       Menu_Item_Advanced_Game : Gtk_Menu_Item;
       Menu_Item_Expert_Game : Gtk_Menu_Item;
       Menu_Item_Custom_Game : Gtk_Menu_Item;
-      Menu_Item_Style : Gtk_Menu_Item;
-      Menu_Item_Quit : Gtk_Menu_Item;
+      Menu_Item_Style : Gtk_Image_Menu_Item;
+      Menu_Item_Quit : Gtk_Image_Menu_Item;
       Menu_Help : Gtk_Menu;
       Menu_Item_Help : Gtk_Menu_Item;
-      Menu_Item_About : Gtk_Menu_Item;
+      Menu_Item_About : Gtk_Image_Menu_Item;
    begin
       --Constraint Check
       if Height < 1 then
@@ -58,7 +58,10 @@ package body P_Main_Window is
       Menu_Game := Gtk_Menu_New;
       Menu_Item_Game.Set_Submenu(Menu_Game);
 
-      Menu_Item_New := Gtk_Menu_Item_New_With_Label("New");
+      Menu_Item_New := Gtk_Image_Menu_Item_New_From_Stock(
+         "gtk-new",
+         null);
+      Menu_Item_New.Set_Label("New");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_New,
          "activate",
@@ -103,7 +106,10 @@ package body P_Main_Window is
 
       Menu_Game.Append(Gtk_Separator_Menu_Item_New);
 
-      Menu_Item_Style := Gtk_Menu_Item_New_With_Label("Style");
+      Menu_Item_Style := Gtk_Image_Menu_Item_New_From_Stock(
+         "gtk-preferences",
+         null);
+     Menu_Item_Style.Set_Label("Style");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_Style,
          "activate",
@@ -113,7 +119,10 @@ package body P_Main_Window is
 
       Menu_Game.Append(Gtk_Separator_Menu_Item_New);
 
-      Menu_Item_Quit := Gtk_Menu_Item_New_With_Label("Quit");
+      Menu_Item_Quit := Gtk_Image_Menu_Item_New_From_Stock(
+         "gtk-quit",
+         null);
+      Menu_Item_Quit.Set_Label("Quit");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_Quit,
          "activate",
@@ -133,7 +142,10 @@ package body P_Main_Window is
          Expand=>false,
          Fill=>false);
 
-      Menu_Item_About := Gtk_Menu_Item_New_With_Label("About");
+      Menu_Item_About := Gtk_Image_Menu_Item_New_From_Stock(
+         "gtk-about",
+         null);
+      Menu_Item_About.Set_Label("About");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_About,
          "activate",

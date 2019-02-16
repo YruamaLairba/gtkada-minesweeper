@@ -15,6 +15,7 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Handlers ;
+with Gtk.Image_Menu_Item; use Gtk.Image_Menu_Item;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Bar; use Gtk.Menu_Bar;
