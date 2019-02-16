@@ -678,6 +678,7 @@ package body P_Main_Window is
       Authors(1):= new String'("Yruama_Lairba")  ;
       About_Dialog.Set_Authors(Authors);
       About_Dialog.Set_Copyright("You can use, share and modify this program according to the GPL Version 3 License.");
+      About_Dialog.Set_License("This doesn't seems to work");
       About_Dialog.Set_License_Type(License_Gpl_3_0);
       About_Dialog.Set_Comments(
          "Minesweeper is build by following practictal exercise proposed by Openclassroom ada courses (see https://openclassrooms.com/fr/courses/900279-apprenez-a-programmer-avec-ada)");
