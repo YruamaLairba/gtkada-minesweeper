@@ -681,7 +681,7 @@ package body P_Main_Window is
       About_Dialog.Set_License("This doesn't seems to work");
       About_Dialog.Set_License_Type(License_Gpl_3_0);
       About_Dialog.Set_Comments(
-         "Minesweeper is build by following practictal exercise proposed by Openclassroom ada courses (see https://openclassrooms.com/fr/courses/900279-apprenez-a-programmer-avec-ada)");
+         "Minesweeper is build by following practictal exercises proposed by Openclassroom ada courses (see https://openclassrooms.com/fr/courses/900279-apprenez-a-programmer-avec-ada)");
       About_Dialog.Show_All;
       Response := About_Dialog.Run;
       About_Dialog.Destroy;
