@@ -67,6 +67,8 @@ package body P_Main_Window is
 
       Menu_Game.Append(Menu_Item_New);
 
+      Menu_Game.Append(Gtk_Separator_Menu_Item_New);
+
       Menu_Item_Beginner_Game := Gtk_Menu_Item_New_With_Label("Beginner");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_Beginner_Game,
@@ -99,6 +101,8 @@ package body P_Main_Window is
          Main_Window);
       Menu_Game.Append(Menu_Item_Custom_Game);
 
+      Menu_Game.Append(Gtk_Separator_Menu_Item_New);
+
       Menu_Item_Style := Gtk_Menu_Item_New_With_Label("Style");
       P_Menu_Item_UHandlers.Connect(
          Menu_Item_Style,
@@ -106,6 +110,8 @@ package body P_Main_Window is
          Style_Callback'access,
          Main_Window);
       Menu_Game.Append(Menu_Item_Style);
+
+      Menu_Game.Append(Gtk_Separator_Menu_Item_New);
 
       Menu_Item_Quit := Gtk_Menu_Item_New_With_Label("Quit");
       P_Menu_Item_UHandlers.Connect(
