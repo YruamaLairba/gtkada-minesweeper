@@ -170,6 +170,10 @@ package P_Main_Window is
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
 
+   procedure Quit_Callback(
+      Emitter : access Gtk_Menu_Item_Record'class;
+      Main_Window : T_Main_Window);
+
    procedure About_Callback(
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window);
