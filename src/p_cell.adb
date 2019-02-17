@@ -32,6 +32,23 @@ package body P_Cell is
       end case;
    end Get_Wrong_Flag_Filename;
 
+   procedure Draw_Nb_Foreign_Mine (
+      Cell: not null access T_Cell_Record) is
+   begin
+      case Cell.Nb_Foreign_Mine is
+         when 0 => Cell.Button.Set_Label("");
+         when 1 => Cell.Button.Set_Label("1");
+         when 2 => Cell.Button.Set_Label("2");
+         when 3 => Cell.Button.Set_Label("3");
+         when 4 => Cell.Button.Set_Label("4");
+         when 5 => Cell.Button.Set_Label("5");
+         when 6 => Cell.Button.Set_Label("6");
+         when 7 => Cell.Button.Set_Label("7");
+         when 8 => Cell.Button.Set_Label("8");
+         when others => null;
+      end case;
+   end Draw_Nb_Foreign_Mine;
+
    procedure Init (Cell: not null access T_Cell_Record) is
    begin
       Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
@@ -67,18 +84,7 @@ package body P_Cell is
             Cell.Button.Set_Image(
                Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
          else
-            case Cell.Nb_Foreign_Mine is
-               when 0 => Cell.Button.Set_Label("");
-               when 1 => Cell.Button.Set_Label("1");
-               when 2 => Cell.Button.Set_Label("2");
-               when 3 => Cell.Button.Set_Label("3");
-               when 4 => Cell.Button.Set_Label("4");
-               when 5 => Cell.Button.Set_Label("5");
-               when 6 => Cell.Button.Set_Label("6");
-               when 7 => Cell.Button.Set_Label("7");
-               when 8 => Cell.Button.Set_Label("8");
-               when others => null;
-            end case;
+            Cell.Draw_Nb_Foreign_Mine;
          end if;
       end if;
    end Dig;
@@ -158,18 +164,7 @@ package body P_Cell is
                Cell.Button.Set_Image(
                   Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
             else
-               case Cell.Nb_Foreign_Mine is
-                  when 0 => Cell.Button.Set_Label("");
-                  when 1 => Cell.Button.Set_Label("1");
-                  when 2 => Cell.Button.Set_Label("2");
-                  when 3 => Cell.Button.Set_Label("3");
-                  when 4 => Cell.Button.Set_Label("4");
-                  when 5 => Cell.Button.Set_Label("5");
-                  when 6 => Cell.Button.Set_Label("6");
-                  when 7 => Cell.Button.Set_Label("7");
-                  when 8 => Cell.Button.Set_Label("8");
-                  when others => null;
-               end case;
+               Cell.Draw_Nb_Foreign_Mine;
             end if;
          when Flagged =>
             Cell.Button.Set_Image(
