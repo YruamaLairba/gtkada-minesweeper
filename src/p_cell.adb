@@ -147,4 +147,33 @@ package body P_Cell is
       end if;
    end Unflag;
 
+   procedure Redraw(Cell: not null access T_Cell_Record) is
+   begin
+      case Cell.State is
+         when Normal => null;
+         when Digged =>
+            Cell.Button.Set_Relief(Relief_None);
+            Cell.Button.Set_Sensitive(false);
+            if Cell.Mined then
+               Cell.Button.Set_Image(
+                  Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
+            else
+               case Cell.Nb_Foreign_Mine is
+                  when 0 => Cell.Button.Set_Label("");
+                  when 1 => Cell.Button.Set_Label("1");
+                  when 2 => Cell.Button.Set_Label("2");
+                  when 3 => Cell.Button.Set_Label("3");
+                  when 4 => Cell.Button.Set_Label("4");
+                  when 5 => Cell.Button.Set_Label("5");
+                  when 6 => Cell.Button.Set_Label("6");
+                  when 7 => Cell.Button.Set_Label("7");
+                  when 8 => Cell.Button.Set_Label("8");
+                  when others => null;
+               end case;
+            end if;
+         when Flagged =>
+            Cell.Button.Set_Image(
+               Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
+      end case;
+   end Redraw;
 end P_Cell;

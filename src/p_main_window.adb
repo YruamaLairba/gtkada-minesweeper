@@ -489,6 +489,7 @@ package body P_Main_Window is
    begin
       for Cell of Main_Window.Cells.all loop
          Cell.Style := Style;
+         Cell.Redraw;
       end loop;
    end Set_Cell_Style;
 

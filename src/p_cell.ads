@@ -66,6 +66,8 @@ package P_Cell is
 
    procedure Unflag(Cell: not null access T_Cell_Record);
 
+   procedure Redraw(Cell: not null access T_Cell_Record);
+
    procedure free is new Ada.Unchecked_Deallocation(
       T_Cell_Record,T_Cell) ;
 
