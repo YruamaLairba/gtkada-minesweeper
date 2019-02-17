@@ -187,8 +187,11 @@ package body P_Main_Window is
       Main_Window.Place_Mines;
 
       Frame1.Add(Main_Window.Counter);
+      Main_Window.Counter.Set_Padding(Gint(5),Gint(5));
       Main_Window.Vbox.Pack_Start(
          Child => Frame1,
+         Expand => false,
+         Fill => false,
          Padding=> 0);
       Main_Window.Vbox.Pack_Start(Main_Window.Table);
       Main_Window.Win.Add(Main_Window.Vbox);
@@ -250,7 +253,9 @@ package body P_Main_Window is
       Nb_Flag: Natural) is
    begin
       Main_Window.Nb_Flag := Nb_Flag;
-      Main_Window.Counter.Set_Label(Natural'Image(Nb_Flag));
+      Main_Window.Counter.Set_Markup(
+         "<span font-weight=""bold"">" &
+         Natural'Image(Nb_Flag) & "</span>");
    end;
 
    procedure Place_Mine(
