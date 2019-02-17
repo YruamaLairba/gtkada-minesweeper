@@ -19,7 +19,7 @@ package body P_Cell is
    function Get_Flag_Filename(Style : T_Style) return String is
    begin
       case Style is
-         when Style1 => return "share/icons/drapeaux-bleu.png";
+         when Style1 => return "share/icons/drapeau-bleu.png";
          when Style2 => return "share/icons/style2/flag.png";
       end case;
    end Get_Flag_Filename;
@@ -27,7 +27,7 @@ package body P_Cell is
    function Get_Wrong_Flag_Filename(Style : T_Style) return String is
    begin
       case Style is
-         when Style1 => return "share/icons/drapeaux-bleu-barre.png";
+         when Style1 => return "share/icons/drapeau-bleu-barre.png";
          when Style2 => return "share/icons/style2/wrong-flag.png";
       end case;
    end Get_Wrong_Flag_Filename;
