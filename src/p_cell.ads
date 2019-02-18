@@ -12,7 +12,15 @@ with System.Address_Image;
 
 package P_Cell is
 
-   type T_Cell_State is (Normal, Digged, Flagged);
+   type T_Cell_State is (
+      Normal, --initial state, diggable cell
+      Digged, --Empty cell digged by player 
+      Flagged, --Flag putted by player
+      Exploded, --Mined cell digged by player
+      Mine_Revealed, --To Show unexploded mine when you loose
+      Rightly_Flagged, --At game end, Flag putted by player was good
+      Wrongly_Flagged --At game end, Flag putted by player was bad
+      );
 
    type T_Cell_Icons is record
       Mine: Gtk_Image; --Mine revealed when loosing

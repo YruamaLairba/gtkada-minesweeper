@@ -81,6 +81,7 @@ package body P_Cell is
          Cell.Button.Set_Relief(Relief_None);
          Cell.Button.Set_Sensitive(false);
          if Cell.Mined then
+            Cell.State := Exploded;
             Cell.Button.Set_Image(
                Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
          else
@@ -95,12 +96,16 @@ package body P_Cell is
       case Cell.State is
          when Normal =>
             if Cell.Mined then
+               Cell.State:= Mine_Revealed;
                Cell.Button.Set_Relief(Relief_None);
                Cell.Button.Set_Image(
                   Gtk_Image_New_From_File(Get_Mine_Filename(Cell.Style)));
             end if;
          when Flagged =>
-            if not Cell.Mined then
+            if Cell.Mined then
+               Cell.State := Rightly_Flagged;
+            else
+               Cell.State := Wrongly_Flagged;
                Cell.Button.Set_Image(
                   Gtk_Image_New_From_File(
                      Get_Wrong_Flag_Filename(Cell.Style)));
@@ -116,6 +121,7 @@ package body P_Cell is
       case Cell.State is
          when Normal =>
             if Cell.Mined then
+               Cell.State := Rightly_Flagged;
                Cell.Button.Set_Image(
                   Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
             end if;
@@ -166,9 +172,18 @@ package body P_Cell is
             else
                Cell.Draw_Nb_Foreign_Mine;
             end if;
-         when Flagged =>
+         when Flagged | Rightly_Flagged =>
             Cell.Button.Set_Image(
                Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
+         when Exploded =>
+            Cell.Button.Set_Image(
+               Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
+         when Mine_Revealed =>
+            Cell.Button.Set_Image(
+               Gtk_Image_New_From_File(Get_Mine_Filename(Cell.Style)));
+         when Wrongly_Flagged =>
+            Cell.Button.Set_Image(
+               Gtk_Image_New_From_File(Get_Wrong_Flag_Filename(Cell.Style)));
       end case;
    end Redraw;
 end P_Cell;
