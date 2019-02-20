@@ -68,8 +68,6 @@ package P_Cell is
 
    procedure Win_Reveal(Cell: not null access T_Cell_Record);
 
-   procedure Reset(Cell: not null access T_Cell_Record);
-
    procedure Flag(Cell: not null access T_Cell_Record);
 
    procedure Unflag(Cell: not null access T_Cell_Record);

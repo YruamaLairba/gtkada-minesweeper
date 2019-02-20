@@ -150,28 +150,6 @@ package body P_Cell is
       end case;
    end Win_Reveal;
 
-   procedure Reset(Cell: not null access T_Cell_Record) is
-   begin
-      Cell.Mined := false;
-      Cell.Nb_Foreign_Mine := 0;
-      Cell.State := Normal;
-      if Cell.Image /= null then
-         Cell.Image.Destroy;
-         Cell.Image := null;
-      end if;
-      if Cell.Button /= null then
-         Cell.Button.Destroy;
-         Cell.Button := null;
-      end if;
-      if Cell.Label /= null then
-         Cell.Label.Destroy;
-         Cell.Label := null;
-      end if;
-      Gtk_New(Cell.Button);
-      Cell.Alignment.Add(Cell.Button);
-      Cell.Alignment.Show_All;
-   end Reset;
-
    procedure Flag(Cell: not null access T_Cell_Record) is
    begin
       if Cell.State = Normal then

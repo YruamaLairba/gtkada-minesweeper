@@ -307,16 +307,6 @@ package body P_Main_Window is
       end loop;
    end Place_Mines;
 
-   procedure Reset_Cells(
-      Main_Window: not null access T_Main_Window_Record) is
-   begin
-      for row in Main_Window.Cells'Range(1) loop
-         for col in Main_Window.Cells'Range(2) loop
-            Main_Window.Cells(row,col).Reset;
-         end loop;
-      end loop;
-   end Reset_Cells;
-
    procedure New_Grid(
       Main_Window: not null access T_Main_Window_Record;
       Height: Natural;
@@ -456,17 +446,6 @@ package body P_Main_Window is
    end End_Game;
 
    procedure New_Game(
-      Main_Window: not null access T_Main_Window_Record) is
-   begin
-      Put_Line("New Game");
-      Main_Window.Reset_Cells;
-      Main_Window.Nb_Unmined_Cell := 
-         Main_Window.Height * Main_Window.Width - Main_Window.Nb_Mine;
-      Main_Window.Set_Nb_Flag(Main_Window.Nb_Mine);
-      Main_Window.Place_Mines;
-   end New_Game;
-
-   procedure New_Game(
       Main_Window: not null access T_Main_Window_Record;
       Height: Natural;
       Width: Natural;
@@ -498,7 +477,10 @@ package body P_Main_Window is
       Emitter : access Gtk_Menu_Item_Record'class;
       Main_Window : T_Main_Window) is
    begin
-      Main_Window.New_Game;
+      Main_Window.New_Game(
+         Main_Window.Height,
+         Main_Window.Width,
+         Main_Window.Nb_Mine);
    end New_Game_Callback;
 
    procedure New_Grid_Callback(

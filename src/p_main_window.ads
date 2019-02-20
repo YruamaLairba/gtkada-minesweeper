@@ -97,9 +97,6 @@ package P_Main_Window is
    procedure Place_Mines(
       Main_Window: not null access T_Main_Window_Record);
 
-   procedure Reset_Cells(
-      Main_Window: not null access T_Main_Window_Record);
-
    procedure New_Grid(
       Main_Window: not null access T_Main_Window_Record;
       Height: Natural;
@@ -122,9 +119,6 @@ package P_Main_Window is
    procedure End_Game(
       Main_Window: not null access T_Main_Window_Record;
       Win : boolean);
-
-   procedure New_Game(
-      Main_Window: not null access T_Main_Window_Record);
 
    procedure New_Game(
       Main_Window: not null access T_Main_Window_Record;
