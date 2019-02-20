@@ -52,14 +52,14 @@ package body P_Cell is
    function Set_Text (N: Integer) return String is
    begin
       case N is
-         when 1 => return "1";
-         when 2 => return "2";
-         when 3 => return "3";
-         when 4 => return "4";
-         when 5 => return "5";
-         when 6 => return "6";
-         when 7 => return "7";
-         when 8 => return "8";
+         when 1 => return "<span font_desc='comic sans ms bold 12' foreground='blue'>1</span>" ;
+         when 2 => return "<span font_desc='comic sans ms bold 12' foreground='#096A09'>2</span>" ;
+         when 3 => return "<span font_desc='comic sans ms bold 12' foreground='red'>3</span>" ;
+         when 4 => return "<span font_desc='comic sans ms bold 12' foreground='#003399'>4</span>" ;
+         when 5 => return "<span font_desc='comic sans ms bold 12' foreground='#6C0277'>5</span>" ;
+         when 6 => return "<span font_desc='comic sans ms bold 12' foreground='#87591A'>6</span>" ;
+         when 7 => return "<span font_desc='comic sans ms bold 12' foreground='#DF6D14'>7</span>" ;
+         when 8 => return "<span font_desc='comic sans ms bold 12' foreground='#606060'>8</span>" ;
          when others => return "";
       end case;
    end Set_Text;
