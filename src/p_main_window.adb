@@ -388,16 +388,16 @@ package body P_Main_Window is
             Main_Window.Win_Reveal;
             return;
          end if;
-      end if;
-      if Cell.Nb_Foreign_Mine = 0 then
-         for R in First_Row..Last_Row loop
-            for C in First_Col..Last_Col loop
-               Cell := Main_Window.Cells(R,C);
-               if Cell.State = Normal  then
-                  Dig_Around(Main_Window, R, C);
-               end if;
+         if Cell.Nb_Foreign_Mine = 0 then
+            for R in First_Row..Last_Row loop
+               for C in First_Col..Last_Col loop
+                  Cell := Main_Window.Cells(R,C);
+                  if Cell.State = Normal  then
+                     Dig_Around(Main_Window, R, C);
+                  end if;
+               end loop;
             end loop;
-         end loop;
+         end if;
       end if;
    end Dig_Around;
 
