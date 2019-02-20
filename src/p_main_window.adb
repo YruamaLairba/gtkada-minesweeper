@@ -15,6 +15,7 @@ package body P_Main_Window is
       Width : Natural;
       Nb_Mine: Natural) is
       Frame1 : Gtk_Frame := Gtk_Frame_New;
+      ScrollWin: Gtk_Scrolled_Window;
       Menu_Bar : Gtk_Menu_Bar;
       Menu_Game : Gtk_Menu;
       Menu_Item_Game : Gtk_Menu_Item;
@@ -184,6 +185,8 @@ package body P_Main_Window is
          end loop;
       end loop;
 
+      Gtk_New(Scrollwin);
+
       Main_Window.Place_Mines;
 
       Frame1.Add(Main_Window.Counter);
@@ -193,7 +196,8 @@ package body P_Main_Window is
          Expand => false,
          Fill => false,
          Padding=> 0);
-      Main_Window.Vbox.Pack_Start(Main_Window.Table);
+      Scrollwin.Add_With_Viewport(Main_Window.Table);
+      Main_Window.Vbox.Pack_Start(Scrollwin);
       Main_Window.Win.Add(Main_Window.Vbox);
 
 

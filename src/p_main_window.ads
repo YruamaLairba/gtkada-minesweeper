@@ -20,6 +20,7 @@ with Gtk.Label; use Gtk.Label;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Bar; use Gtk.Menu_Bar;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Separator_Menu_Item; use Gtk.Separator_Menu_Item;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Spin_Button; use Gtk.Spin_Button;
