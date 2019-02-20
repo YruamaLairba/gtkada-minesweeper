@@ -49,6 +49,20 @@ package body P_Cell is
       end case;
    end Draw_Nb_Foreign_Mine;
 
+   function Set_Text (N: Integer) return String is
+   begin
+      case N is
+         when 1 => return "1";
+         when 2 => return "2";
+         when 3 => return "3";
+         when 4 => return "4";
+         when 5 => return "5";
+         when 6 => return "6";
+         when 7 => return "7";
+         when 8 => return "8";
+         when others => return "";
+      end case;
+   end Set_Text;
    procedure Init (Cell: not null access T_Cell_Record) is
    begin
       Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
@@ -65,7 +79,6 @@ package body P_Cell is
 
    procedure Destroy (Cell: not null access T_Cell_Record) is
    begin
-      Cell.Button.Destroy;
       Cell.Alignment.Destroy;
    end Destroy;
 
@@ -77,38 +90,42 @@ package body P_Cell is
    procedure Dig(Cell : not null access T_Cell_Record) is
    begin
       if Cell.State = normal then
-         Cell.State := Digged;
-         Cell.Button.Set_Relief(Relief_None);
-         Cell.Button.Set_Sensitive(false);
+         Cell.Button.Destroy;
          if Cell.Mined then
             Cell.State := Exploded;
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
+            Cell.Image := Gtk_Image_New_From_File(
+               Get_Explode_Filename(Cell.Style));
+            Cell.Alignment.Add(Cell.Image);
          else
-            Cell.Draw_Nb_Foreign_Mine;
+            Cell.State := Digged;
+            Cell.Label := Gtk_Label_New;
+            Cell.Label.Set_Markup(Set_Text(Cell.Nb_Foreign_Mine));
+            Cell.Alignment.Add(Cell.Label);
          end if;
+         Cell.Alignment.Show_All;
       end if;
    end Dig;
 
    procedure Loose_Reveal(Cell : not null access T_Cell_Record) is
    begin
-      Cell.Button.Set_Sensitive(false);
       case Cell.State is
          when Normal =>
             if Cell.Mined then
                Cell.State:= Mine_Revealed;
-               Cell.Button.Set_Relief(Relief_None);
-               Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File(Get_Mine_Filename(Cell.Style)));
+               Cell.Button.Destroy;
+               Cell.Image := Gtk_Image_New_From_File(
+                  Get_Mine_Filename(Cell.Style));
+               Cell.Alignment.Add(Cell.Image);
+               Cell.Alignment.Show_All;
             end if;
          when Flagged =>
             if Cell.Mined then
                Cell.State := Rightly_Flagged;
             else
                Cell.State := Wrongly_Flagged;
-               Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File(
-                     Get_Wrong_Flag_Filename(Cell.Style)));
+               Cell.Image.Set(Get_Wrong_Flag_Filename(Cell.Style));
+               Cell.Button.Add(Cell.Image);
+               Cell.Button.Show_All;
             end if;
          when others =>
             null;
@@ -117,13 +134,13 @@ package body P_Cell is
 
    procedure Win_Reveal(Cell : not null access T_Cell_Record) is
    begin
-      Cell.Button.Set_Sensitive(false);
       case Cell.State is
-         when Normal =>
+         when Normal|Flagged =>
             if Cell.Mined then
                Cell.State := Rightly_Flagged;
-               Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
+               Cell.Image.Set(Get_Flag_Filename(Cell.Style));
+               Cell.Button.Add(Cell.Image);
+               Cell.Button.Show_All;
             end if;
          when others =>
             null;
@@ -135,19 +152,26 @@ package body P_Cell is
       Cell.Mined := false;
       Cell.Nb_Foreign_Mine := 0;
       Cell.State := Normal;
-      Cell.Button.Set_Image( Gtk_Image_New);
-      Cell.Button.Set_Label("");
-      Cell.Button.Set_Sensitive(true);
-      Cell.Button.Set_Relief(Relief_Normal);
+      if Cell.Image /= null then
+         Cell.Image.Destroy;
+      end if;
+      if Cell.Button /= null then
+         Cell.Button.Destroy;
+      end if;
+      if Cell.Label /= null then
+         Cell.Label.Destroy;
+      end if;
+      Gtk_New(Cell.Button);
+      Cell.Alignment.Add(Cell.Button);
    end Reset;
-
 
    procedure Flag(Cell: not null access T_Cell_Record) is
    begin
       if Cell.State = Normal then
          Cell.State := Flagged;
-         Cell.Button.Set_Image(
-            Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
+         Gtk_New(Cell.Image,Get_Flag_Filename(Cell.Style));
+         Cell.Button.Add(Cell.Image);
+         Cell.Button.Show_All;
       end if;
    end Flag;
 
@@ -155,7 +179,7 @@ package body P_Cell is
    begin
       if Cell.State = Flagged then
          Cell.State := Normal;
-         Cell.Button.Set_Image( Gtk_Image_New);
+         Cell.Image.Destroy;
       end if;
    end Unflag;
 
@@ -164,26 +188,15 @@ package body P_Cell is
       case Cell.State is
          when Normal => null;
          when Digged =>
-            Cell.Button.Set_Relief(Relief_None);
-            Cell.Button.Set_Sensitive(false);
-            if Cell.Mined then
-               Cell.Button.Set_Image(
-                  Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
-            else
-               Cell.Draw_Nb_Foreign_Mine;
-            end if;
+            Cell.Label.Set_Markup(Set_Text(Cell.Nb_Foreign_Mine));
          when Flagged | Rightly_Flagged =>
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File(Get_Flag_Filename(Cell.Style)));
+            Cell.Image.Set(Get_Flag_Filename(Cell.Style));
          when Exploded =>
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File(Get_Explode_Filename(Cell.Style)));
+            Cell.Image.Set( Get_Explode_Filename(Cell.Style));
          when Mine_Revealed =>
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File(Get_Mine_Filename(Cell.Style)));
+            Cell.Image.Set(Get_Mine_Filename(Cell.Style));
          when Wrongly_Flagged =>
-            Cell.Button.Set_Image(
-               Gtk_Image_New_From_File(Get_Wrong_Flag_Filename(Cell.Style)));
+            Cell.Image.Set(Get_Wrong_Flag_Filename(Cell.Style));
       end case;
    end Redraw;
 end P_Cell;
