@@ -80,6 +80,7 @@ package body P_Cell is
    procedure Destroy (Cell: not null access T_Cell_Record) is
    begin
       Cell.Alignment.Destroy;
+      Cell.Alignment := null;
    end Destroy;
 
    procedure Finalize (Cell: in out T_Cell_Record) is
@@ -91,6 +92,7 @@ package body P_Cell is
    begin
       if Cell.State = normal then
          Cell.Button.Destroy;
+         Cell.Button := null;
          if Cell.Mined then
             Cell.State := Exploded;
             Cell.Image := Gtk_Image_New_From_File(
@@ -113,6 +115,7 @@ package body P_Cell is
             if Cell.Mined then
                Cell.State:= Mine_Revealed;
                Cell.Button.Destroy;
+               Cell.Button := null;
                Cell.Image := Gtk_Image_New_From_File(
                   Get_Mine_Filename(Cell.Style));
                Cell.Alignment.Add(Cell.Image);
@@ -154,15 +157,19 @@ package body P_Cell is
       Cell.State := Normal;
       if Cell.Image /= null then
          Cell.Image.Destroy;
+         Cell.Image := null;
       end if;
       if Cell.Button /= null then
          Cell.Button.Destroy;
+         Cell.Button := null;
       end if;
       if Cell.Label /= null then
          Cell.Label.Destroy;
+         Cell.Label := null;
       end if;
       Gtk_New(Cell.Button);
       Cell.Alignment.Add(Cell.Button);
+      Cell.Alignment.Show_All;
    end Reset;
 
    procedure Flag(Cell: not null access T_Cell_Record) is
@@ -180,6 +187,7 @@ package body P_Cell is
       if Cell.State = Flagged then
          Cell.State := Normal;
          Cell.Image.Destroy;
+         Cell.Image := null;
       end if;
    end Unflag;
 
