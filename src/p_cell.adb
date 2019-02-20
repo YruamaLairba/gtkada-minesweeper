@@ -120,6 +120,8 @@ package body P_Cell is
                   Get_Mine_Filename(Cell.Style));
                Cell.Alignment.Add(Cell.Image);
                Cell.Alignment.Show_All;
+            else
+               Cell.State:= Frozen;
             end if;
          when Flagged =>
             if Cell.Mined then
@@ -172,7 +174,7 @@ package body P_Cell is
    procedure Redraw(Cell: not null access T_Cell_Record) is
    begin
       case Cell.State is
-         when Normal => null;
+         when Normal|Frozen => null;
          when Digged =>
             Cell.Label.Set_Markup(Set_Text(Cell.Nb_Foreign_Mine));
          when Flagged | Rightly_Flagged =>

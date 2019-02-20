@@ -19,7 +19,8 @@ package P_Cell is
       Exploded, --Mined cell digged by player
       Mine_Revealed, --To Show unexploded mine when you loose
       Rightly_Flagged, --At game end, Flag putted by player was good
-      Wrongly_Flagged --At game end, Flag putted by player was bad
+      Wrongly_Flagged, --At game end, Flag putted by player was bad
+      Frozen --to disable normal cell when games ended
       );
 
    type T_Cell_Icons is record
