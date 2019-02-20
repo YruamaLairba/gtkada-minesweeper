@@ -143,7 +143,10 @@ package body P_Cell is
          when Normal|Flagged =>
             if Cell.Mined then
                Cell.State := Rightly_Flagged;
-               Cell.Image.Set(Get_Flag_Filename(Cell.Style));
+               if Cell.Image /= null then
+                  Cell.Image.Destroy;
+               end if;
+               Gtk_New(Cell.Image,Get_Flag_Filename(Cell.Style));
                Cell.Button.Add(Cell.Image);
                Cell.Button.Show_All;
             end if;
