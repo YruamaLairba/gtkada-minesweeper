@@ -1,6 +1,9 @@
 
 package body P_Main_Window is
 
+   --height of the counter frame
+   Counter_Height : constant Gint := Gint(50);
+
    procedure Stop_Program_Callback(
       Emetteur : access Gtk_Window_Record'class;
       Main_Window : T_Main_Window) is
@@ -52,6 +55,7 @@ package body P_Main_Window is
 
       Menu_Bar := Gtk_Menu_Bar_New;
       Menu_Bar.set_pack_direction(Pack_Direction_LTR) ;
+      Menu_Bar.Set_Size_Request(-1,40);
 
       Menu_Item_Game := Gtk_Menu_Item_New_With_Label("Game");
       Menu_Bar.Append(Menu_Item_Game);
@@ -190,15 +194,21 @@ package body P_Main_Window is
       Main_Window.Place_Mines;
 
       Frame1.Add(Main_Window.Counter);
-      Main_Window.Counter.Set_Padding(Gint(5),Gint(5));
+      Frame1.Set_Size_Request(-1,Counter_Height);
       Main_Window.Vbox.Pack_Start(
          Child => Frame1,
          Expand => false,
          Fill => false,
          Padding=> 0);
       Scrollwin.Add_With_Viewport(Main_Window.Table);
-      Main_Window.Vbox.Pack_Start(Scrollwin);
+      Main_Window.Vbox.Pack_Start(
+         Scrollwin,
+         Expand=>true,
+         Fill=>true);
       Main_Window.Win.Add(Main_Window.Vbox);
+      Main_Window.Win.Set_Default_Size(
+         Cell_Min_Size*Gint(width),
+         Gint(40) + Counter_Height + Cell_Min_Size*Gint(Height)) ;
 
 
       Main_Window.Set_Nb_Flag(Main_Window.Nb_Flag);
@@ -454,6 +464,10 @@ package body P_Main_Window is
       Height: Natural;
       Width: Natural;
       Nb_Mine: Natural) is
+      Max_Height : Gint;
+      Max_Width : Gint;
+      Win_Height : Gint;
+      Win_Width : Gint;
    begin
       Main_Window.Destroy_Grid;
       Main_Window.Height := Height;
@@ -464,6 +478,16 @@ package body P_Main_Window is
       Main_Window.Nb_Unmined_Cell := Height * Width - Nb_Mine;
       Main_Window.New_Grid(Height,Width);
       Main_Window.Place_Mines;
+
+      Max_Height := Main_Window.Win.Get_Screen.Get_Height - Gint(20);
+      Max_Width := Main_Window.Win.Get_Screen.Get_Width - Gint(10);
+      Win_Height := Gint'Min(
+         Max_Height,
+         Gint(40) + Counter_Height + Cell_Min_Size*Gint(Height));
+      Win_Width := Gint'Min(Max_Width, Cell_Min_Size*Gint(Width));
+
+      Main_Window.Win.Set_Default_Size(Win_Width,Win_Height);
+      Main_Window.Win.Resize(Win_Width,Win_Height);
    end New_Game;
 
    procedure Set_Cell_Style(

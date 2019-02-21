@@ -7,6 +7,7 @@ with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with Gdk.Event; use Gdk.Event;
 with Gdk.Pixbuf; use Gdk.Pixbuf;
+with Gdk.Screen; use Gdk.Screen;
 with Gtk.About_Dialog; use Gtk.About_Dialog;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;

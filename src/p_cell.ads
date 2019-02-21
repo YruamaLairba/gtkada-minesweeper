@@ -12,6 +12,7 @@ with System.Address_Image;
 
 package P_Cell is
 
+   Cell_Min_Size : constant Gint := Gint(50);
    type T_Cell_State is (
       Normal, --initial state, diggable cell
       Digged, --Empty cell digged by player 

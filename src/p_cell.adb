@@ -66,7 +66,7 @@ package body P_Cell is
    procedure Init (Cell: not null access T_Cell_Record) is
    begin
       Gtk_New(Cell.Alignment,0.5,0.5,1.0,1.0);
-      Cell.Alignment.Set_Size_Request(Gint(50),Gint(50));
+      Cell.Alignment.Set_Size_Request(Cell_Min_Size,Cell_Min_Size);
       Gtk_New(Cell.Button);
       Cell.Alignment.Add(Cell.Button);
    end Init;
